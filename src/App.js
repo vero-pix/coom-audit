@@ -102,7 +102,7 @@ const SOCIA_COLORS = {
 };
 
 const TABS = [
-  "Panorama", "Aporte 12%", "Ingresos/Gastos", "F22 / F29", "Sim. AT2026", "Marco Legal"
+  "Panorama", "Aporte 12%", "Ingresos/Gastos", "F22 / F29", "Sim. AT2026", "Excedentes", "Marco Legal"
 ];
 
 // ============ STYLES ============
@@ -595,14 +595,144 @@ export default function AuditoriaCOOM() {
             <div style={{ ...alertBox, border: "1px solid #3d2a3d" }}>
               <h3 style={{ color: "#d4a849", fontSize: 12, fontWeight: 600, margin: "0 0 8px" }}>NOTA CRITICA</h3>
               <p style={{ fontSize: 11, color: "#c4c2bf", lineHeight: 1.6, margin: 0 }}>
-                El resultado depende de como se clasifiquen las facturas de compra. Ademas, las operaciones con socias (Savia, Aptiqa, Florence) estan exentas de 1ra Categoria (Art. 51 LGC). Solo tributa el remanente de operaciones con terceros (disenadoras + venta al publico). El contador debe separar ambos flujos.
+                El resultado depende de como se clasifiquen las facturas de compra. Ademas, las operaciones con socias - Savia, Aptiqa, Florence - estan exentas de 1ra Categoria segun Art. 51 LGC. Solo tributa el remanente de operaciones con terceros - disenadoras + venta al publico -. El contador debe separar ambos flujos.
               </p>
             </div>
           </div>
         )}
 
-        {/* ===== TAB 5: MARCO LEGAL ===== */}
+        {/* ===== TAB 5: EXCEDENTES ===== */}
         {tab === 5 && (
+          <div>
+            <div style={alertBox}>
+              <h3 style={{ color: "#e85d5d", fontSize: 13, fontWeight: 600, margin: "0 0 10px" }}>
+                HALLAZGO: REPARTO DE "EXCEDENTES" CON PERDIDA TRIBUTARIA
+              </h3>
+              <p style={{ fontSize: 12, color: "#c4c2bf", lineHeight: 1.7, margin: "0 0 12px" }}>
+                Se detectaron pagos sistematicos a las socias activas registrados como "Reparticion de Excedentes"
+                o "Distribucion de exedentes" en los archivos de Detalle de Ingresos y Egresos, durante un periodo
+                en que la cooperativa registra perdida tributaria acumulada.
+              </p>
+            </div>
+
+            <div style={box}>
+              <h3 style={{ color: "#c9a84c", fontSize: 13, fontWeight: 600, margin: "0 0 12px" }}>
+                REGISTRO DE REPARTOS DETECTADOS
+              </h3>
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ borderBottom: "2px solid #2a2a2f" }}>
+                      <TH>Periodo</TH>
+                      <TH>Glosa en archivo</TH>
+                      <TH right>Monto por socia</TH>
+                      <TH right>Total repartido</TH>
+                      <TH>Socias que reciben</TH>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["Sep-24", "Reparticion de exedentes", 48378, 48378*4, "LM + ST + AP + FC"],
+                      ["Oct-24", "Reparticion de exedentes", 130522, 130522*4, "LM + ST + AP + FC"],
+                      ["Nov-24", "Reparticion de Excedentes", 130000, 390000, "ST + AP + FC"],
+                      ["Dic-24", "Reparticion de Excedentes", 227559, 682678, "ST + AP + FC"],
+                      ["Ene-25", "Distribucion de exedentes", 250000, 750000, "ST + AP + FC"],
+                      ["Feb-25", "Exedentes", 35645, 106935, "ST + AP + FC"],
+                      ["Mar-25", "Exedentes", 239804, 719412, "ST + AP + FC"],
+                    ].map(([per, glosa, xsocia, total, socias], i) => (
+                      <tr key={i} style={{ borderBottom: "1px solid #1e1e23" }}>
+                        <TD>{per}</TD>
+                        <TD color="#d4a849">{glosa}</TD>
+                        <TD right isMono>{fmt(xsocia)}</TD>
+                        <TD right isMono bold color="#ff6b6b">{fmt(total)}</TD>
+                        <TD>{socias}</TD>
+                      </tr>
+                    ))}
+                    <tr style={{ borderTop: "2px solid #2a2a2f" }}>
+                      <TD bold>TOTAL</TD>
+                      <TD />
+                      <TD />
+                      <TD right isMono bold color="#ff6b6b">{fmt(48378*4 + 130522*4 + 390000 + 682678 + 750000 + 106935 + 719412)}</TD>
+                      <TD />
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+              <div style={{ ...alertBox, border: "1px solid #3d2a2a" }}>
+                <h4 style={{ color: "#ff6b6b", fontSize: 12, fontWeight: 600, margin: "0 0 8px" }}>
+                  PROBLEMA LEGAL
+                </h4>
+                <div style={{ fontSize: 11, color: "#c4c2bf", lineHeight: 1.7 }}>
+                  <p style={{ margin: "0 0 8px" }}>
+                    Segun Art. 36 de la Ley General de Cooperativas, el remanente del ejercicio debe primero
+                    absorber perdidas acumuladas, luego ir a reservas legales/voluntarias, y solo el saldo
+                    restante si existe se denomina "excedente" y puede distribuirse.
+                  </p>
+                  <p style={{ margin: "0 0 8px" }}>
+                    COOM registra perdida tributaria de -$5.099.473 (AT2024) y -$1.137.370 (AT2025).
+                    Con perdida acumulada, legalmente no existen excedentes distribuibles.
+                  </p>
+                  <p style={{ margin: 0 }}>
+                    Repartir "excedentes" con balance negativo genera responsabilidad solidaria
+                    de los consejeros de administracion segun Art. 26 LGC.
+                  </p>
+                </div>
+              </div>
+
+              <div style={box}>
+                <h4 style={{ color: "#c9a84c", fontSize: 12, fontWeight: 600, margin: "0 0 8px" }}>
+                  QUE ESTA PASANDO EN REALIDAD
+                </h4>
+                <div style={{ fontSize: 11, color: "#c4c2bf", lineHeight: 1.7 }}>
+                  <p style={{ margin: "0 0 8px" }}>
+                    Lo mas probable es que se esta usando "excedentes" de forma informal para referirse
+                    al saldo de caja que sobra despues de pagar gastos del mes. Es decir, es flujo de caja
+                    operativo, no un excedente cooperativo en sentido legal.
+                  </p>
+                  <p style={{ margin: 0 }}>
+                    En la practica, es un mecanismo de devolucion del margen retenido a las socias:
+                    la cooperativa retiene 12% + sueldos + Transbank, paga gastos, y devuelve lo que sobra.
+                    El concepto correcto seria "anticipo a cuenta de liquidacion" o "devolucion de margen retenido".
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div style={box}>
+              <h3 style={{ color: "#c9a84c", fontSize: 12, fontWeight: 600, margin: "0 0 10px" }}>
+                RECOMENDACIONES
+              </h3>
+              <div style={{ fontSize: 12, color: "#c4c2bf", lineHeight: 1.7 }}>
+                <p style={{ margin: "0 0 8px" }}>
+                  <strong style={{ color: "#f5f5f5" }}>1. Cambiar la glosa inmediatamente.</strong>{" "}
+                  Dejar de usar "excedentes" o "reparticion de excedentes". Usar "devolucion de margen retenido"
+                  o "anticipo a cuenta de liquidacion mensual".
+                </p>
+                <p style={{ margin: "0 0 8px" }}>
+                  <strong style={{ color: "#f5f5f5" }}>2. Regularizar contablemente.</strong>{" "}
+                  Los montos ya pagados deben reclasificarse en la contabilidad como anticipos o prestamos
+                  a socias, no como distribucion de excedentes.
+                </p>
+                <p style={{ margin: "0 0 8px" }}>
+                  <strong style={{ color: "#f5f5f5" }}>3. No repartir hasta absorber perdidas.</strong>{" "}
+                  Mientras exista perdida tributaria acumulada, no se pueden distribuir excedentes formales.
+                  Los retiros deben tener otra naturaleza juridica.
+                </p>
+                <p style={{ margin: 0 }}>
+                  <strong style={{ color: "#f5f5f5" }}>4. Acta de asamblea.</strong>{" "}
+                  Formalizar en acta el mecanismo de devolucion mensual del margen, diferenciandolo
+                  explicitamente de la distribucion de excedentes del Art. 36 LGC.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===== TAB 6: MARCO LEGAL ===== */}
+        {tab === 6 && (
           <div>
             <div style={box}>
               <h3 style={{ color: "#c9a84c", fontSize: 13, fontWeight: 600, margin: "0 0 14px" }}>
@@ -628,24 +758,24 @@ export default function AuditoriaCOOM() {
 
                 <p style={{ margin: "0 0 14px" }}>
                   <strong style={{ color: "#f5f5f5" }}>3. Se retira? Se devuelve?</strong>{" "}
-                  No. A diferencia de los "excedentes" (que si se distribuyen), la retencion del 12% no se devuelve.
+                  No. A diferencia de los "excedentes" que si se distribuyen, la retencion del 12% no se devuelve.
                   Es un costo del servicio de comercializacion. Lo que si se puede distribuir son los excedentes
                   al cierre del ejercicio, pero COOM lleva dos anos con perdida tributaria: no hay excedentes.
                 </p>
 
                 <div style={{ background: "#0f1117", borderRadius: 6, padding: 14, marginBottom: 14 }}>
                   <p style={{ margin: "0 0 8px", color: "#e8e6e3" }}>
-                    <strong>4. Remanente vs Excedente (Art. 36 LGC / DFL 5-2003):</strong>
+                    <strong>4. Remanente vs Excedente - Art. 36 LGC / DFL 5-2003::</strong>
                   </p>
                   <p style={{ margin: "0 0 6px" }}>
                     El saldo favorable del ejercicio se llama <strong style={{ color: "#c9a84c" }}>remanente</strong>.
                     Primero absorbe perdidas acumuladas. Luego va a reservas legales/voluntarias.
                     El saldo final se denomina <strong style={{ color: "#4ade80" }}>excedente</strong> y se distribuye
-                    entre socios a prorrata de sus cuotas de participacion (o se emiten cuotas liberadas).
+                    entre socios a prorrata de sus cuotas de participacion o se emiten cuotas liberadas.
                   </p>
                   <p style={{ margin: "0 0 6px" }}>
                     <strong style={{ color: "#c9a84c" }}>Patrimonio cooperativo</strong> = aportes de capital +
-                    reservas legales/voluntarias + excedentes (o menos perdidas).
+                    reservas legales/voluntarias + excedentes o menos perdidas.
                   </p>
                   <p style={{ margin: 0 }}>
                     <strong style={{ color: "#ff6b6b" }}>COOM hoy:</strong> con perdida acumulada de $1.1M (AT2025),
@@ -656,17 +786,17 @@ export default function AuditoriaCOOM() {
 
                 <div style={{ background: "#0f1117", borderRadius: 6, padding: 14, marginBottom: 14 }}>
                   <p style={{ margin: "0 0 8px", color: "#e8e6e3" }}>
-                    <strong>5. Tributacion especial cooperativa (Art. 17 DL 824):</strong>
+                    <strong>5. Tributacion especial cooperativa - Art. 17 DL 824::</strong>
                   </p>
                   <p style={{ margin: "0 0 6px" }}>
                     <strong style={{ color: "#4ade80" }}>Operaciones con socios:</strong> El remanente originado en
-                    operaciones con las socias (Savia, Aptiqa, Florence, La Margot, SurOrigen) esta exento de
-                    Impuesto de 1ra Categoria (Art. 51 LGC). Los excedentes distribuidos por estas operaciones
+                    operaciones con las socias - Savia, Aptiqa, Florence, La Margot, SurOrigen - esta exento de
+                    Impuesto de 1ra Categoria segun Art. 51 LGC. Los excedentes distribuidos por estas operaciones
                     son ingreso no renta para las socias.
                   </p>
                   <p style={{ margin: "0 0 6px" }}>
                     <strong style={{ color: "#ff6b6b" }}>Operaciones con terceros:</strong> El remanente de operaciones
-                    con NO socias (Monoco, Casakiro, VM, Endemica, venta al publico) SI tributa con 1ra Categoria.
+                    con NO socias - Monoco, Casakiro, VM, Endemica, venta al publico - SI tributa con 1ra Categoria.
                   </p>
                   <p style={{ margin: 0, color: "#d4a849" }}>
                     <strong>Implicancia AT2026:</strong> El contador debe separar el remanente entre operaciones con
@@ -692,7 +822,7 @@ export default function AuditoriaCOOM() {
                     b) Registrar como "ingreso por administracion", diferenciado de ventas.
                   </p>
                   <p style={{ margin: "0 0 4px", paddingLeft: 12 }}>
-                    c) Definir en asamblea el tratamiento de socias inactivas (La Margot, SurOrigen).
+                    c) Definir en asamblea el tratamiento de socias inactivas - La Margot, SurOrigen.
                   </p>
                   <p style={{ margin: 0, paddingLeft: 12 }}>
                     d) Evaluar si el 12% es suficiente o requiere ajuste dado el deficit operativo recurrente.
