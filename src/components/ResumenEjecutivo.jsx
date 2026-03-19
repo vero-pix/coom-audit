@@ -1,5 +1,5 @@
 // ============================================
-// COOM - Resumen Ejecutivo
+// COOM - Resumen Ejecutivo (ACTUALIZADO)
 // ============================================
 
 import { Card, KPI, Alert, DataTable, Badge } from './ui';
@@ -7,18 +7,18 @@ import { formatCLP, formatPct, sumBy } from '../utils/format';
 import { KPI as KPI_DATA, EERR_MENSUAL, ALERTAS, EMPRESA } from '../data/financialData';
 
 export function ResumenEjecutivo() {
-  // Calcular totales EERR
+  // Calcular totales EERR con nuevos campos
   const totales = {
-    ventas: sumBy(EERR_MENSUAL, 'ventas'),
-    costos: sumBy(EERR_MENSUAL, 'costos'),
+    ingresos: sumBy(EERR_MENSUAL, 'ingresos'),
+    liquidaciones: sumBy(EERR_MENSUAL, 'liquidaciones'),
     gastos: sumBy(EERR_MENSUAL, 'gastos'),
     resultado: sumBy(EERR_MENSUAL, 'resultado')
   };
 
   const eerrColumns = [
     { key: 'mes', label: 'Mes' },
-    { key: 'ventas', label: 'Ventas', align: 'right', render: v => formatCLP(v) },
-    { key: 'costos', label: 'Costos', align: 'right', render: v => formatCLP(v), className: () => 'fin-costo' },
+    { key: 'ingresos', label: 'Ingresos', align: 'right', render: v => formatCLP(v) },
+    { key: 'liquidaciones', label: 'Liquidaciones', align: 'right', render: v => formatCLP(v), className: () => 'fin-costo' },
     { key: 'gastos', label: 'Gastos', align: 'right', render: v => formatCLP(v), className: () => 'fin-costo' },
     { 
       key: 'resultado', 
@@ -31,13 +31,13 @@ export function ResumenEjecutivo() {
 
   const eerrFooter = {
     mes: 'TOTAL',
-    ventas: formatCLP(totales.ventas),
-    costos: formatCLP(totales.costos),
+    ingresos: formatCLP(totales.ingresos),
+    liquidaciones: formatCLP(totales.liquidaciones),
     gastos: formatCLP(totales.gastos),
     resultado: formatCLP(totales.resultado)
   };
 
-  const alertasCriticas = ALERTAS.filter(a => a.nivel === 'CRITICO');
+  const alertasCriticas = ALERTAS.filter(a => a.nivel === 'CRITICO' || a.nivel === 'ALTO');
 
   return (
     <div>
@@ -63,25 +63,25 @@ export function ResumenEjecutivo() {
       {/* KPIs principales */}
       <div className="kpi-grid" style={{ marginBottom: 'var(--space-6)' }}>
         <KPI 
-          label="Ventas Totales" 
-          value={KPI_DATA.ventasTotales}
-          detail={`Socias: ${formatCLP(KPI_DATA.ventasSocias)} · Terceros: ${formatCLP(KPI_DATA.ventasTerceros)}`}
+          label="Ingresos Totales" 
+          value={KPI_DATA.ingresosTotales}
+          detail={`Boletas: ${formatCLP(KPI_DATA.ingresosBoletas)} · Facturas: ${formatCLP(KPI_DATA.ingresosFacturas)}`}
         />
         <KPI 
           label="Margen Bruto" 
           value={KPI_DATA.margenBruto}
-          detail={`${formatPct(KPI_DATA.margenPct)} sobre ventas`}
+          detail={`${formatPct(KPI_DATA.margenPct)} sobre ingresos`}
         />
         <KPI 
-          label="Resultado Neto" 
-          value={KPI_DATA.resultadoNeto}
+          label="Resultado Operacional" 
+          value={KPI_DATA.resultadoOperacional}
           detail={`Rentabilidad ${formatPct(KPI_DATA.rentabilidadPct)}`}
-          className={KPI_DATA.resultadoNeto >= 0 ? '' : 'negative'}
+          className={KPI_DATA.resultadoOperacional >= 0 ? '' : 'negative'}
         />
         <KPI 
-          label="Costo de Ventas" 
-          value={KPI_DATA.costoVentas}
-          detail={`${formatPct((KPI_DATA.costoVentas / KPI_DATA.ventasTotales) * 100)} de las ventas`}
+          label="IVA Posición" 
+          value={KPI_DATA.ivaPosicion}
+          detail={KPI_DATA.ivaPosicion < 0 ? 'Crédito a favor' : 'A pagar'}
         />
       </div>
 
@@ -97,12 +97,12 @@ export function ResumenEjecutivo() {
 
         <Card title="Composición de Ingresos">
           <div style={{ padding: 'var(--space-4)' }}>
-            {/* Barra de composición */}
+            {/* Barra de composición - Boletas */}
             <div style={{ marginBottom: 'var(--space-5)' }}>
               <div style={{ display: 'flex', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
-                <span>Socias (exento Art. 17)</span>
+                <span>Ventas Boletas</span>
                 <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)' }}>
-                  {formatPct((KPI_DATA.ventasSocias / KPI_DATA.ventasTotales) * 100)}
+                  {formatPct((KPI_DATA.ingresosBoletas / KPI_DATA.ingresosTotales) * 100)}
                 </span>
               </div>
               <div style={{ 
@@ -112,18 +112,19 @@ export function ResumenEjecutivo() {
                 overflow: 'hidden'
               }}>
                 <div style={{ 
-                  width: `${(KPI_DATA.ventasSocias / KPI_DATA.ventasTotales) * 100}%`,
+                  width: `${(KPI_DATA.ingresosBoletas / KPI_DATA.ingresosTotales) * 100}%`,
                   height: '100%',
                   background: 'var(--brand-beige-dark)'
                 }} />
               </div>
             </div>
 
+            {/* Barra de composición - Facturas */}
             <div style={{ marginBottom: 'var(--space-5)' }}>
               <div style={{ display: 'flex', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
-                <span>Terceros (gravado IVA)</span>
+                <span>Ventas Facturas (a terceros)</span>
                 <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)' }}>
-                  {formatPct((KPI_DATA.ventasTerceros / KPI_DATA.ventasTotales) * 100)}
+                  {formatPct((KPI_DATA.ingresosFacturas / KPI_DATA.ingresosTotales) * 100)}
                 </span>
               </div>
               <div style={{ 
@@ -133,7 +134,7 @@ export function ResumenEjecutivo() {
                 overflow: 'hidden'
               }}>
                 <div style={{ 
-                  width: `${(KPI_DATA.ventasTerceros / KPI_DATA.ventasTotales) * 100}%`,
+                  width: `${(KPI_DATA.ingresosFacturas / KPI_DATA.ingresosTotales) * 100}%`,
                   height: '100%',
                   background: 'var(--text-secondary)'
                 }} />
@@ -148,16 +149,16 @@ export function ResumenEjecutivo() {
               fontSize: 'var(--text-sm)'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
-                <span>
-                  <Badge variant="socia">SOCIA</Badge> Ventas exentas
-                </span>
-                <span className="font-mono">{formatCLP(KPI_DATA.ventasSocias)}</span>
+                <span>Boletas (venta directa)</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.ingresosBoletas)}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>
-                  <Badge variant="tercero">TERCERO</Badge> Ventas gravadas
-                </span>
-                <span className="font-mono">{formatCLP(KPI_DATA.ventasTerceros)}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
+                <span>Facturas (liquidaciones)</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.ingresosFacturas)}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-2)', fontWeight: 'var(--font-semibold)' }}>
+                <span>TOTAL INGRESOS</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.ingresosTotales)}</span>
               </div>
             </div>
 
@@ -167,12 +168,83 @@ export function ResumenEjecutivo() {
               marginTop: 'var(--space-4)',
               lineHeight: 1.5
             }}>
-              Art. 17 DL 824: Las operaciones entre cooperativa y sus socias están exentas de IVA. 
-              La correcta separación de estos flujos es clave para optimización tributaria.
+              Fuente: Libros de Compras y Ventas SII (RCV). Las facturas corresponden a liquidaciones 
+              a marcas terceras y generan IVA débito fiscal.
             </p>
           </div>
         </Card>
       </div>
+
+      {/* Composición de Costos */}
+      <Card title="Estructura de Costos y Gastos" style={{ marginTop: 'var(--space-5)' }}>
+        <div className="grid-2">
+          {/* Liquidaciones */}
+          <div style={{ padding: 'var(--space-4)' }}>
+            <h4 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-semibold)', marginBottom: 'var(--space-3)' }}>
+              Liquidaciones a Marcas
+            </h4>
+            <div style={{ marginBottom: 'var(--space-3)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <span><Badge variant="socia">SOCIAS</Badge> Art. 17 exento</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.liquidacionesSocias)}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)' }}>
+                <span><Badge variant="tercero">TERCEROS</Badge> Gravado</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.liquidacionesTerceros)}</span>
+              </div>
+            </div>
+            <div style={{ 
+              background: 'var(--bg-subtle)', 
+              padding: 'var(--space-3)', 
+              borderRadius: 'var(--radius-md)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 'var(--font-semibold)'
+            }}>
+              <span>Total Liquidaciones</span>
+              <span className="font-mono">{formatCLP(KPI_DATA.totalLiquidaciones)}</span>
+            </div>
+          </div>
+
+          {/* Gastos */}
+          <div style={{ padding: 'var(--space-4)' }}>
+            <h4 style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-semibold)', marginBottom: 'var(--space-3)' }}>
+              Gastos Operacionales
+            </h4>
+            <div style={{ marginBottom: 'var(--space-3)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <span>Arriendo Territoria</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.arriendoTerritoria)}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <span>Comisiones Transbank</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.comisionesTransbank)}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <span>Contabilidad (Account)</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.contabilidadAccount)}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)' }}>
+                <span>Otros gastos</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.otrosGastos)}</span>
+              </div>
+            </div>
+            <div style={{ 
+              background: 'var(--bg-subtle)', 
+              padding: 'var(--space-3)', 
+              borderRadius: 'var(--radius-md)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 'var(--font-semibold)'
+            }}>
+              <span>Total Gastos</span>
+              <span className="font-mono">{formatCLP(KPI_DATA.totalGastos)}</span>
+            </div>
+          </div>
+        </div>
+      </Card>
 
       {/* Indicadores adicionales */}
       <Card title="Indicadores de Gestión" style={{ marginTop: 'var(--space-5)' }}>
@@ -190,7 +262,15 @@ export function ResumenEjecutivo() {
               {formatPct(KPI_DATA.rentabilidadPct)}
             </div>
             <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-1)' }}>
-              Rentabilidad Neta
+              Rentabilidad Operacional
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', padding: 'var(--space-4)' }}>
+            <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', fontFamily: 'var(--font-mono)', color: 'var(--color-success)' }}>
+              {formatCLP(Math.abs(KPI_DATA.ivaPosicion))}
+            </div>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-1)' }}>
+              Crédito Fiscal IVA
             </div>
           </div>
           <div style={{ textAlign: 'center', padding: 'var(--space-4)' }}>
@@ -199,14 +279,6 @@ export function ResumenEjecutivo() {
             </div>
             <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-1)' }}>
               Centros de Costo
-            </div>
-          </div>
-          <div style={{ textAlign: 'center', padding: 'var(--space-4)' }}>
-            <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', fontFamily: 'var(--font-mono)' }}>
-              12
-            </div>
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 'var(--space-1)' }}>
-              Meses Operativos
             </div>
           </div>
         </div>

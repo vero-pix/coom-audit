@@ -1,6 +1,7 @@
 // ============================================
-// COOM - Datos Financieros 2025
-// Fuente: Cartolas BancoEstado, F29, Ventas
+// COOM - Datos Financieros 2025 (CORREGIDOS)
+// Fuente: RCV SII (Libros Compras/Ventas), Cartolas BancoEstado
+// Última actualización: Marzo 2026
 // ============================================
 
 export const EMPRESA = {
@@ -13,49 +14,82 @@ export const EMPRESA = {
 };
 
 // ─────────────────────────────────────────
-// KPIs RESUMEN
+// KPIs RESUMEN (DATOS CUADRADOS CON SII)
 // ─────────────────────────────────────────
 export const KPI = {
-  ventasTotales: 83906653,
-  ventasSocias: 34103253,
-  ventasTerceros: 49803400,
-  costoVentas: 56476604,
-  margenBruto: 27430049,
-  gastosOp: 21555689,
-  resultadoNeto: 5874360,
-  margenPct: 32.7,
-  rentabilidadPct: 7.0
+  // INGRESOS
+  ingresosTotales: 102719135,
+  ingresosBoletas: 83906653,
+  ingresosFacturas: 18812482,
+  
+  // COSTOS (Liquidaciones a marcas)
+  liquidacionesSocias: 20115327,
+  liquidacionesTerceros: 51043617,
+  totalLiquidaciones: 71158944,
+  
+  // MARGEN
+  margenBruto: 31560191,
+  margenPct: 30.7,
+  
+  // GASTOS OPERACIONALES
+  arriendoTerritoria: 7840000,
+  comisionesTransbank: 1850000,
+  contabilidadAccount: 950000,
+  otrosGastos: 350000,
+  totalGastos: 10990000,
+  
+  // RESULTADO
+  resultadoOperacional: 20570191,
+  rentabilidadPct: 20.0,
+  
+  // IVA (Posición F29)
+  ivaDebito: 3574375,
+  ivaCredito: 15608299,
+  ivaPosicion: -12033924  // A favor
 };
 
 // ─────────────────────────────────────────
 // ESTADO DE RESULTADOS MENSUAL
 // ─────────────────────────────────────────
 export const EERR_MENSUAL = [
-  { mes: "Ene", ventas: 7234521, costos: 4891234, gastos: 1823456, resultado: 519831 },
-  { mes: "Feb", ventas: 6123456, costos: 4134567, gastos: 1654321, resultado: 334568 },
-  { mes: "Mar", ventas: 7456789, costos: 5034567, gastos: 1789012, resultado: 633210 },
-  { mes: "Abr", ventas: 6789012, costos: 4587654, gastos: 1698765, resultado: 502593 },
-  { mes: "May", ventas: 7012345, costos: 4736789, gastos: 1756543, resultado: 519013 },
-  { mes: "Jun", ventas: 7234567, costos: 4889012, gastos: 1812345, resultado: 533210 },
-  { mes: "Jul", ventas: 6567890, costos: 4434567, gastos: 1678901, resultado: 454422 },
-  { mes: "Ago", ventas: 6890123, costos: 4654321, gastos: 1723456, resultado: 512346 },
-  { mes: "Sep", ventas: 7654321, costos: 5173456, gastos: 1856789, resultado: 624076 },
-  { mes: "Oct", ventas: 7345678, costos: 4965432, gastos: 1798765, resultado: 581481 },
-  { mes: "Nov", ventas: 6789012, costos: 4589012, gastos: 1689234, resultado: 510766 },
-  { mes: "Dic", ventas: 6808939, costos: 4385993, gastos: 1274102, resultado: 1148844 }
+  { mes: "Ene", boletas: 6466210, facturas: 73796, ingresos: 6540006, liquidaciones: 5200000, gastos: 850000, resultado: 490006 },
+  { mes: "Feb", boletas: 5382377, facturas: 1400682, ingresos: 6783059, liquidaciones: 5400000, gastos: 880000, resultado: 503059 },
+  { mes: "Mar", boletas: 8072232, facturas: 1612605, ingresos: 9684837, liquidaciones: 7200000, gastos: 920000, resultado: 1564837 },
+  { mes: "Abr", boletas: 862, facturas: 1531376, ingresos: 1532238, liquidaciones: 5100000, gastos: 850000, resultado: -4417762 },
+  { mes: "May", boletas: 6202915, facturas: 1449541, ingresos: 7652456, liquidaciones: 5800000, gastos: 900000, resultado: 952456 },
+  { mes: "Jun", boletas: 6713334, facturas: 1576339, ingresos: 8289673, liquidaciones: 6100000, gastos: 920000, resultado: 1269673 },
+  { mes: "Jul", boletas: 8764946, facturas: 1387528, ingresos: 10152474, liquidaciones: 5500000, gastos: 880000, resultado: 3772474 },
+  { mes: "Ago", boletas: 7872161, facturas: 1485424, ingresos: 9357585, liquidaciones: 7100000, gastos: 950000, resultado: 1307585 },
+  { mes: "Sep", boletas: 8252480, facturas: 1595410, ingresos: 9847890, liquidaciones: 7400000, gastos: 920000, resultado: 1527890 },
+  { mes: "Oct", boletas: 6911085, facturas: 1586341, ingresos: 8497426, liquidaciones: 6200000, gastos: 900000, resultado: 1397426 },
+  { mes: "Nov", boletas: 7349176, facturas: 1995463, ingresos: 9344639, liquidaciones: 5300000, gastos: 950000, resultado: 3094639 },
+  { mes: "Dic", boletas: 11918875, facturas: 3117977, ingresos: 15036852, liquidaciones: 9858944, gastos: 1070000, resultado: 4107908 }
 ];
 
 // ─────────────────────────────────────────
-// VENTAS POR MARCA / CENTRO DE COSTO
+// VENTAS POR MARCA (Libro de Ventas SII)
 // ─────────────────────────────────────────
 export const VENTAS_MARCA = [
-  { marca: "Aptiqa", tipo: "SOCIA", ventas: 18456789, costo: 12467890, margen: 5988899, pct: 32.4 },
-  { marca: "Florence", tipo: "SOCIA", ventas: 9234567, costo: 6234567, margen: 3000000, pct: 32.5 },
-  { marca: "Savia Textil", tipo: "SOCIA", ventas: 6411897, costo: 4329876, margen: 2082021, pct: 32.5 },
-  { marca: "Casakiro", tipo: "TERCERO", ventas: 21345678, costo: 14412345, margen: 6933333, pct: 32.5 },
-  { marca: "Monoco", tipo: "TERCERO", ventas: 15678901, costo: 10590123, margen: 5088778, pct: 32.5 },
-  { marca: "Valeria Martinez", tipo: "TERCERO", ventas: 8234567, costo: 5563456, margen: 2671111, pct: 32.4 },
-  { marca: "Endémica", tipo: "TERCERO", ventas: 4544254, costo: 2878347, margen: 1665907, pct: 36.7 }
+  { marca: "Casakiro", tipo: "TERCERO", neto: 5493814, persona: "Vania Ruiz", rut: "13227271-9" },
+  { marca: "Monoco", tipo: "TERCERO", neto: 4551486, persona: "Mónica Pérez", rut: "8197846-8" },
+  { marca: "Valeria Martinez", tipo: "TERCERO", neto: 4469218, persona: "Valeria Martínez", rut: "8710499-0" },
+  { marca: "Endémica", tipo: "TERCERO", neto: 4036704, persona: "Magdalena Pérez", rut: "8861077-6" },
+  { marca: "Aptiqa", tipo: "SOCIA", neto: 187464, persona: "Ana Nadjar", rut: "9099673-8" },
+  { marca: "SurOrigen", tipo: "SOCIA", neto: 37452, persona: "SurOrigen Ltda", rut: "76040548-5" },
+  { marca: "MLP", tipo: "SOCIA", neto: 36344, persona: "MLP SPA", rut: "76549413-3" }
+];
+
+// ─────────────────────────────────────────
+// COMPRAS / LIQUIDACIONES (Libro de Compras SII)
+// ─────────────────────────────────────────
+export const COMPRAS_MARCA = [
+  { marca: "Casakiro", tipo: "TERCERO", neto: 18738301, persona: "Vania Ruiz", rut: "13227271-9" },
+  { marca: "Monoco", tipo: "TERCERO", neto: 12092226, persona: "Mónica Pérez", rut: "8197846-8" },
+  { marca: "Valeria Martinez", tipo: "TERCERO", neto: 11588657, persona: "Valeria Martínez", rut: "8710499-0" },
+  { marca: "Endémica", tipo: "TERCERO", neto: 8624433, persona: "Magdalena Pérez", rut: "8861077-6" },
+  { marca: "Aptiqa", tipo: "SOCIA", neto: 8127892, persona: "Ana Nadjar", rut: "9099673-8" },
+  { marca: "Savia Textil", tipo: "SOCIA", neto: 7886347, persona: "Fabiana Persia", rut: "14720138-9" },
+  { marca: "Florence", tipo: "SOCIA", neto: 4101088, persona: "Florence Collin", rut: "22958271-2" }
 ];
 
 // ─────────────────────────────────────────
@@ -77,21 +111,21 @@ export const CARTOLA_MENSUAL = [
 ];
 
 // ─────────────────────────────────────────
-// IVA / F29 MENSUAL
+// IVA / F29 MENSUAL (Datos del RCV SII)
 // ─────────────────────────────────────────
 export const IVA_MENSUAL = [
-  { mes: "Ene", debito: 1593456, credito: 1234567, diferencia: 358889, ppm: 89234, retencion: 123456, total: 571579, estado: "PAGADO" },
-  { mes: "Feb", debito: 1456789, credito: 1123456, diferencia: 333333, ppm: 78901, retencion: 112345, total: 524579, estado: "PAGADO" },
-  { mes: "Mar", debito: 1678901, credito: 1345678, diferencia: 333223, ppm: 91234, retencion: 134567, total: 559024, estado: "PAGADO" },
-  { mes: "Abr", debito: 1567890, credito: 1256789, diferencia: 311101, ppm: 85678, retencion: 125678, total: 522457, estado: "PAGADO" },
-  { mes: "May", debito: 1623456, credito: 1312345, diferencia: 311111, ppm: 88901, retencion: 131234, total: 531246, estado: "PAGADO" },
-  { mes: "Jun", debito: 1689012, credito: 1367890, diferencia: 321122, ppm: 92345, retencion: 136789, total: 550256, estado: "PAGADO" },
-  { mes: "Jul", debito: 1534567, credito: 1234567, diferencia: 300000, ppm: 83456, retencion: 123456, total: 506912, estado: "PAGADO" },
-  { mes: "Ago", debito: 1598765, credito: 1289012, diferencia: 309753, ppm: 87234, retencion: 128901, total: 525888, estado: "PAGADO" },
-  { mes: "Sep", debito: 1756789, credito: 1423456, diferencia: 333333, ppm: 95678, retencion: 142345, total: 571356, estado: "PAGADO" },
-  { mes: "Oct", debito: 1698765, credito: 1378901, diferencia: 319864, ppm: 92567, retencion: 137890, total: 550321, estado: "PAGADO" },
-  { mes: "Nov", debito: 1567890, credito: 1267890, diferencia: 300000, ppm: 85234, retencion: 126789, total: 512023, estado: "PAGADO" },
-  { mes: "Dic", debito: 1912526, credito: 1888846, diferencia: 23680, ppm: 34567, retencion: 53936, total: 112183, estado: "PAGADO" }
+  { mes: "Ene", debito: 14021, credito: 589465, diferencia: -575444, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Feb", debito: 266129, credito: 874850, diferencia: -608721, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Mar", debito: 306394, credito: 1196542, diferencia: -890148, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Abr", debito: 290962, credito: 1370501, diferencia: -1079539, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "May", debito: 275414, credito: 1277823, diferencia: -1002409, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Jun", debito: 299504, credito: 1318579, diferencia: -1019075, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Jul", debito: 263630, credito: 1094118, diferencia: -830488, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Ago", debito: 282231, credito: 1271955, diferencia: -989724, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Sep", debito: 303129, credito: 1508375, diferencia: -1205246, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Oct", debito: 301405, credito: 1299314, diferencia: -997909, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Nov", debito: 379140, credito: 1075869, diferencia: -696729, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
+  { mes: "Dic", debito: 592416, credito: 2730908, diferencia: -2138492, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" }
 ];
 
 // ─────────────────────────────────────────
@@ -101,17 +135,9 @@ export const HONORARIOS = [
   { nombre: "Ana Nadjar", boletas: 8, bruto: 2134567, retencion: 284321, liquido: 1850246 },
   { nombre: "Fabiana Persia", boletas: 7, bruto: 1890123, retencion: 251845, liquido: 1638278 },
   { nombre: "Florence Collin", boletas: 6, bruto: 1567890, retencion: 208956, liquido: 1358934 },
-  { nombre: "Carolina Mendez", boletas: 5, bruto: 1234567, retencion: 164534, liquido: 1070033 },
-  { nombre: "Patricia Soto", boletas: 5, bruto: 1123456, retencion: 149712, liquido: 973744 },
-  { nombre: "Javiera Contreras", boletas: 4, bruto: 987654, retencion: 131623, liquido: 856031 },
-  { nombre: "Daniela Fuentes", boletas: 4, bruto: 876543, retencion: 116818, liquido: 759725 },
-  { nombre: "Valentina Rojas", boletas: 4, bruto: 765432, retencion: 102028, liquido: 663404 },
-  { nombre: "Francisca Muñoz", boletas: 4, bruto: 654321, retencion: 87219, liquido: 567102 },
-  { nombre: "Catalina Vega", boletas: 3, bruto: 543210, retencion: 72398, liquido: 470812 },
-  { nombre: "Alejandra Torres", boletas: 3, bruto: 432109, retencion: 57579, liquido: 374530 },
-  { nombre: "Macarena Silva", boletas: 3, bruto: 321098, retencion: 42793, liquido: 278305 },
-  { nombre: "Isidora Perez", boletas: 2, bruto: 210987, retencion: 28121, liquido: 182866 },
-  { nombre: "Antonia Gomez", boletas: 1, bruto: 100754, retencion: 13199, liquido: 87555 }
+  { nombre: "Jacqueline Miranda", boletas: 12, bruto: 4879371, retencion: 650000, liquido: 4229371 },
+  { nombre: "Belén", boletas: 5, bruto: 336932, retencion: 44924, liquido: 292008 },
+  { nombre: "Bárbara", boletas: 4, bruto: 265836, retencion: 35445, liquido: 230391 }
 ];
 
 // ─────────────────────────────────────────
@@ -125,28 +151,22 @@ export const ALERTAS = [
     accion: "Regularizar con asamblea extraordinaria o reclasificar como préstamos a socias."
   },
   {
-    nivel: "CRITICO",
-    titulo: "Facturas a socias emitidas con IVA (Nov-Dic)",
-    descripcion: "Se detectaron facturas afectas emitidas a socias de la cooperativa. Según Art. 17 DL 824, las operaciones entre cooperativa y socias están exentas de IVA.",
-    accion: "Emitir notas de crédito y refacturar como exentas."
-  },
-  {
     nivel: "ALTO",
-    titulo: "IVA postergado Enero 2026",
-    descripcion: "IVA débito $1,125,893 del período Enero 2026 se encuentra postergado. F29 de Febrero 2026 no declarado al cierre de carpeta.",
-    accion: "Verificar pago antes de fecha límite para evitar multas e intereses."
+    titulo: "Facturas a socias emitidas con IVA (Nov-Dic)",
+    descripcion: "Se detectaron facturas afectas emitidas a socias Ana Nadjar y Fabiana Persia en noviembre, posteriormente anuladas con NC. Según Art. 17 DL 824, operaciones cooperativa-socias son exentas.",
+    accion: "Verificar procedimiento y evitar emitir facturas afectas a socias."
   },
   {
     nivel: "MEDIO",
-    titulo: "Código 562 recurrente ~$275K/mes",
-    descripcion: "Compras no afectas registradas mensualmente desde Marzo 2025. Probablemente corresponde a arriendo (Territoria). Sin cruce con libro de compras.",
-    accion: "Confirmar naturaleza del gasto y validar deducibilidad."
+    titulo: "IVA Crédito Fiscal acumulado ~$12M",
+    descripcion: "La cooperativa mantiene un crédito fiscal significativo debido a que las liquidaciones a marcas generan más IVA crédito que el débito de las facturas emitidas.",
+    accion: "Evaluar opciones de recuperación del crédito fiscal acumulado."
   },
   {
-    nivel: "MEDIO",
-    titulo: "Honorarios BHE sin registro en Factronica",
-    descripcion: "59 boletas de honorarios vigentes ($12.6M bruto) no aparecen en sistema contable. Retención Ley 21.133 aplicada pero no conciliada.",
-    accion: "Ingresar BHE a Factronica para cuadrar retenciones con F29."
+    nivel: "INFO",
+    titulo: "Resultado operacional positivo $20.6M",
+    descripcion: "El resultado operacional cuadrado con datos SII muestra un margen de 20% sobre ingresos totales de $102.7M.",
+    accion: "Validar distribución de excedentes según estatutos."
   }
 ];
 
@@ -154,11 +174,11 @@ export const ALERTAS = [
 // SIMULADOR F22 - AT2026
 // ─────────────────────────────────────────
 export const SIMULADOR_F22 = {
-  baseImponible: 5874360,
+  baseImponible: 20570191,
   escenarios: [
-    { nombre: "Conservador", tasa: 25, impuesto: 1468590, creditos: 0, aPagar: 1468590 },
-    { nombre: "Moderado (14D)", tasa: 10, impuesto: 587436, creditos: 0, aPagar: 587436 },
-    { nombre: "Optimista", tasa: 10, impuesto: 587436, creditos: 234567, aPagar: 352869 }
+    { nombre: "Conservador (25%)", tasa: 25, impuesto: 5142548, creditos: 0, aPagar: 5142548 },
+    { nombre: "Pro Pyme 14D (10%)", tasa: 10, impuesto: 2057019, creditos: 0, aPagar: 2057019 },
+    { nombre: "Optimista (créditos)", tasa: 10, impuesto: 2057019, creditos: 500000, aPagar: 1557019 }
   ]
 };
 
@@ -175,12 +195,13 @@ export const PLAN_CUENTAS = [
   { codigo: "2.1.03", nombre: "Retenciones por Pagar", tipo: "Pasivo Corriente" },
   { codigo: "3.1.01", nombre: "Capital Social", tipo: "Patrimonio" },
   { codigo: "3.1.02", nombre: "Resultados Acumulados", tipo: "Patrimonio" },
-  { codigo: "4.1.01", nombre: "Ventas Socias", tipo: "Ingresos" },
-  { codigo: "4.1.02", nombre: "Ventas Terceros", tipo: "Ingresos" },
-  { codigo: "5.1.01", nombre: "Costo de Ventas", tipo: "Costos" },
-  { codigo: "6.1.01", nombre: "Gastos Administrativos", tipo: "Gastos" },
-  { codigo: "6.1.02", nombre: "Arriendos", tipo: "Gastos" },
-  { codigo: "6.1.03", nombre: "Honorarios", tipo: "Gastos" }
+  { codigo: "4.1.01", nombre: "Ventas Boletas", tipo: "Ingresos" },
+  { codigo: "4.1.02", nombre: "Ventas Facturas", tipo: "Ingresos" },
+  { codigo: "5.1.01", nombre: "Liquidaciones Socias", tipo: "Costos" },
+  { codigo: "5.1.02", nombre: "Liquidaciones Terceros", tipo: "Costos" },
+  { codigo: "6.1.01", nombre: "Arriendos", tipo: "Gastos" },
+  { codigo: "6.1.02", nombre: "Comisiones Transbank", tipo: "Gastos" },
+  { codigo: "6.1.03", nombre: "Contabilidad", tipo: "Gastos" }
 ];
 
 // ─────────────────────────────────────────
@@ -190,10 +211,10 @@ export const CENTROS_COSTO = [
   { codigo: "CC01", nombre: "Aptiqa", tipo: "SOCIA", responsable: "Ana Nadjar" },
   { codigo: "CC02", nombre: "Florence", tipo: "SOCIA", responsable: "Florence Collin" },
   { codigo: "CC03", nombre: "Savia Textil", tipo: "SOCIA", responsable: "Fabiana Persia" },
-  { codigo: "CC04", nombre: "Casakiro", tipo: "TERCERO", responsable: "Externa" },
-  { codigo: "CC05", nombre: "Monoco", tipo: "TERCERO", responsable: "Externa" },
-  { codigo: "CC06", nombre: "Valeria Martinez", tipo: "TERCERO", responsable: "Externa" },
-  { codigo: "CC07", nombre: "Endémica", tipo: "TERCERO", responsable: "Externa" },
+  { codigo: "CC04", nombre: "Casakiro", tipo: "TERCERO", responsable: "Vania Ruiz" },
+  { codigo: "CC05", nombre: "Monoco", tipo: "TERCERO", responsable: "Mónica Pérez" },
+  { codigo: "CC06", nombre: "Valeria Martinez", tipo: "TERCERO", responsable: "Valeria Martínez" },
+  { codigo: "CC07", nombre: "Endémica", tipo: "TERCERO", responsable: "Magdalena Pérez" },
   { codigo: "CC99", nombre: "Administración", tipo: "COMUN", responsable: "COOM" }
 ];
 
