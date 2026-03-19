@@ -17,7 +17,8 @@ const NAV_SECTIONS = [
     items: [
       { id: 'ventas', label: 'Ventas por Marca', icon: '◈' },
       { id: 'costos', label: 'Costos y Gastos', icon: '◇' },
-      { id: 'honorarios', label: 'Honorarios BHE', icon: '◆' }
+      { id: 'excedentes', label: 'Excedentes Socias', icon: '◆' },
+      { id: 'honorarios', label: 'Honorarios BHE', icon: '◇' }
     ]
   },
   {
@@ -53,7 +54,7 @@ export function Sidebar({ activeSection, onSectionChange }) {
           <div>
             <div className="sidebar-logo-text">COOM</div>
             <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>
-              Sistema Contable
+              Sistema de Apoyo Fzas
             </div>
           </div>
         </div>

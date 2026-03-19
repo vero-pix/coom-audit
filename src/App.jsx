@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { ResumenEjecutivo } from './components/ResumenEjecutivo';
 import { VentasMarca } from './components/VentasMarca';
+import { CostosGastos } from './components/CostosGastos';
+import { ExcedentesSocias } from './components/ExcedentesSocias';
 import { IvaF29 } from './components/IvaF29';
 import { HonorariosBHE } from './components/HonorariosBHE';
 import { CartolaBancaria } from './components/CartolaBancaria';
@@ -52,7 +54,9 @@ export default function App() {
       case 'ventas':
         return <VentasMarca />;
       case 'costos':
-        return <PlaceholderPage title="Costos y Gastos" description="Distribución de gastos operacionales" />;
+        return <CostosGastos />;
+      case 'excedentes':
+        return <ExcedentesSocias />;
       case 'honorarios':
         return <HonorariosBHE />;
       case 'iva':
@@ -123,7 +127,7 @@ export default function App() {
           display: 'flex',
           justifyContent: 'space-between'
         }}>
-          <span>COOM Sistema de Gestión Financiera</span>
+          <span>COOM Sistema de Apoyo Fzas</span>
           <span>Período: {EMPRESA.periodo}</span>
         </footer>
       </main>
