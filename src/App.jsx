@@ -14,6 +14,8 @@ import { CartolaBancaria } from './components/CartolaBancaria';
 import { Alertas } from './components/Alertas';
 import { SimuladorF22 } from './components/SimuladorF22';
 import { PlanCuentas } from './components/PlanCuentas';
+import { FlujoCaja } from './components/FlujoCaja';
+import { Documentos } from './components/Documentos';
 import { EMPRESA } from './data/financialData';
 
 // Componentes placeholder para secciones pendientes
@@ -68,11 +70,11 @@ export default function App() {
       case 'conciliacion':
         return <PlaceholderPage title="Conciliación Bancaria" description="Cruce libro banco vs cartola" />;
       case 'flujo':
-        return <PlaceholderPage title="Flujo de Caja" description="Proyección de liquidez" />;
+        return <FlujoCaja />;
       case 'cuentas':
         return <PlanCuentas />;
       case 'documentos':
-        return <PlaceholderPage title="Documentos" description="Centro de descarga de reportes" />;
+        return <Documentos />;
       default:
         return <ResumenEjecutivo />;
     }
