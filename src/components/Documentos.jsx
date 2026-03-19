@@ -2,27 +2,29 @@
 // COOM - Centro de Documentos
 // ============================================
 
-import { Card, Badge } from './ui';
+import { Card, Badge, Button } from './ui';
 import { EMPRESA } from '../data/financialData';
 
 export function Documentos() {
   const documentos = [
     {
-      categoria: 'Informes de Auditoría',
+      categoria: 'Documentos de Auditoría - Descargables',
       items: [
         { 
-          nombre: 'Informe Auditoría COOM 2025', 
-          descripcion: 'Análisis completo período Enero-Diciembre 2025',
-          tipo: 'PDF',
+          nombre: 'Cuadratura SII 2025', 
+          descripcion: 'Libro Ventas, Compras, EERR, IVA/F29 consolidado',
+          tipo: 'XLSX',
           estado: 'disponible',
-          fecha: '15-Ene-2026'
+          archivo: 'COOM_Cuadratura_SII_2025.xlsx',
+          fecha: '19-Mar-2026'
         },
         { 
-          nombre: 'Resumen Ejecutivo Auditoría', 
-          descripcion: 'Hallazgos críticos y recomendaciones',
-          tipo: 'DOCX',
+          nombre: 'Flujo de Caja y Conciliación', 
+          descripcion: 'Flujo mensual, categorías, liquidaciones, conciliación bancaria',
+          tipo: 'XLSX',
           estado: 'disponible',
-          fecha: '15-Ene-2026'
+          archivo: 'COOM_FlujoCaja_Conciliacion_2025.xlsx',
+          fecha: '19-Mar-2026'
         }
       ]
     },
@@ -33,29 +35,16 @@ export function Documentos() {
           nombre: 'Excedentes por Socia', 
           descripcion: 'Distribución mensual de excedentes a socias',
           tipo: 'XLSX',
-          estado: 'disponible',
-          fecha: '20-Ene-2026'
-        },
-        { 
-          nombre: 'Liquidaciones Terceros', 
-          descripcion: 'Pagos a diseñadoras externas',
-          tipo: 'XLSX',
-          estado: 'disponible',
-          fecha: '20-Ene-2026'
+          estado: 'pendiente',
+          fecha: '—'
         },
         { 
           nombre: 'Estado de Resultados 2025', 
           descripcion: 'EERR mensual consolidado',
           tipo: 'XLSX',
           estado: 'disponible',
-          fecha: '10-Ene-2026'
-        },
-        { 
-          nombre: 'Flujo de Caja Proyectado', 
-          descripcion: 'Proyección 6 meses con escenarios',
-          tipo: 'XLSX',
-          estado: 'disponible',
-          fecha: '22-Ene-2026'
+          archivo: 'COOM_Cuadratura_SII_2025.xlsx',
+          fecha: '19-Mar-2026'
         }
       ]
     },
@@ -64,21 +53,22 @@ export function Documentos() {
       items: [
         { 
           nombre: 'Resumen F29 Anual', 
-          descripcion: 'Consolidado IVA mensual 2025',
-          tipo: 'PDF',
+          descripcion: 'Consolidado IVA mensual 2025 - Hoja IVA_F29',
+          tipo: 'XLSX',
           estado: 'disponible',
-          fecha: '05-Ene-2026'
+          archivo: 'COOM_Cuadratura_SII_2025.xlsx',
+          fecha: '19-Mar-2026'
         },
         { 
           nombre: 'Simulación F22 AT2026', 
-          descripcion: 'Escenarios de impuesto renta',
-          tipo: 'PDF',
+          descripcion: 'Ver sección Simulador en el menú lateral',
+          tipo: 'APP',
           estado: 'disponible',
-          fecha: '18-Ene-2026'
+          fecha: '—'
         },
         { 
           nombre: 'Carpeta Tributaria SII', 
-          descripcion: 'Documento oficial descargado del SII',
+          descripcion: 'Documento oficial - descargar desde SII',
           tipo: 'PDF',
           estado: 'externo',
           fecha: '—'
@@ -90,17 +80,19 @@ export function Documentos() {
       items: [
         { 
           nombre: 'Cartola BancoEstado 2025', 
-          descripcion: 'Movimientos consolidados del año',
+          descripcion: 'Movimientos consolidados - Hoja Detalle_Movimientos',
           tipo: 'XLSX',
           estado: 'disponible',
-          fecha: '02-Ene-2026'
+          archivo: 'COOM_FlujoCaja_Conciliacion_2025.xlsx',
+          fecha: '19-Mar-2026'
         },
         { 
           nombre: 'Conciliación Bancaria', 
-          descripcion: 'Cruce libro banco vs cartola',
+          descripcion: 'Cruce libro banco vs cartola - Hoja Conciliacion',
           tipo: 'XLSX',
-          estado: 'pendiente',
-          fecha: '—'
+          estado: 'disponible',
+          archivo: 'COOM_FlujoCaja_Conciliacion_2025.xlsx',
+          fecha: '19-Mar-2026'
         }
       ]
     }
@@ -111,6 +103,7 @@ export function Documentos() {
       case 'PDF': return '📄';
       case 'XLSX': return '📊';
       case 'DOCX': return '📝';
+      case 'APP': return '⚙️';
       default: return '📁';
     }
   };
@@ -125,15 +118,25 @@ export function Documentos() {
   };
 
   const handleDownload = (doc) => {
-    if (doc.estado === 'disponible') {
-      // Simular descarga
-      alert(`Descargando: ${doc.nombre}.${doc.tipo.toLowerCase()}\n\nEsta funcionalidad requiere backend para generar los archivos dinámicamente.`);
+    if (doc.estado === 'disponible' && doc.archivo) {
+      // Descargar desde /public
+      const link = document.createElement('a');
+      link.href = `/${doc.archivo}`;
+      link.download = doc.archivo;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else if (doc.tipo === 'APP') {
+      alert('Esta funcionalidad está disponible en el menú lateral del dashboard.');
     } else if (doc.estado === 'externo') {
       alert('Este documento debe descargarse directamente desde el SII o la fuente original.');
     } else {
       alert('Este documento aún no está disponible.');
     }
   };
+
+  const disponibles = documentos.reduce((acc, cat) => acc + cat.items.filter(i => i.estado === 'disponible').length, 0);
+  const pendientes = documentos.reduce((acc, cat) => acc + cat.items.filter(i => i.estado === 'pendiente').length, 0);
 
   return (
     <div>
@@ -150,13 +153,13 @@ export function Documentos() {
       {/* Resumen rápido */}
       <div className="kpi-grid" style={{ marginBottom: 'var(--space-6)' }}>
         <div style={{ 
-          background: 'var(--bg-subtle)', 
+          background: 'var(--semantic-positive-soft)', 
           padding: 'var(--space-4)', 
           borderRadius: 'var(--radius-md)',
           textAlign: 'center'
         }}>
           <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', fontFamily: 'var(--font-mono)' }}>
-            {documentos.reduce((acc, cat) => acc + cat.items.filter(i => i.estado === 'disponible').length, 0)}
+            {disponibles}
           </div>
           <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '4px' }}>
             Documentos disponibles
@@ -169,7 +172,7 @@ export function Documentos() {
           textAlign: 'center'
         }}>
           <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', fontFamily: 'var(--font-mono)' }}>
-            {documentos.reduce((acc, cat) => acc + cat.items.filter(i => i.estado === 'pendiente').length, 0)}
+            {pendientes}
           </div>
           <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '4px' }}>
             Pendientes
@@ -182,10 +185,10 @@ export function Documentos() {
           textAlign: 'center'
         }}>
           <div style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', fontFamily: 'var(--font-mono)' }}>
-            4
+            2
           </div>
           <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Categorías
+            Archivos Excel
           </div>
         </div>
         <div style={{ 
@@ -274,11 +277,12 @@ export function Documentos() {
         color: 'var(--text-muted)',
         lineHeight: 1.6
       }}>
-        <strong>Nota:</strong> Los documentos marcados como "Disponible" pueden descargarse directamente. 
-        Los documentos "Externos" deben obtenerse desde la fuente original (SII, banco, etc.). 
-        Los documentos "Pendientes" están en proceso de elaboración.
-        <br /><br />
-        Para solicitar reportes adicionales o personalizados, contacta al equipo de auditoría.
+        <strong>Archivos disponibles para descarga:</strong>
+        <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
+          <li><strong>COOM_Cuadratura_SII_2025.xlsx</strong> - 5 hojas: Resumen, Libro Ventas, Libro Compras, EERR, IVA/F29</li>
+          <li><strong>COOM_FlujoCaja_Conciliacion_2025.xlsx</strong> - 5 hojas: Flujo mensual, Categorías, Liquidaciones, Conciliación, Detalle</li>
+        </ul>
+        Los documentos "Externos" deben obtenerse desde la fuente original (SII, banco).
       </div>
     </div>
   );

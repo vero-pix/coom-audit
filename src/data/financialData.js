@@ -33,14 +33,14 @@ export const KPI = {
   
   // GASTOS OPERACIONALES
   arriendoTerritoria: 7840000,
-  comisionesTransbank: 1850000,
-  contabilidadAccount: 950000,
-  otrosGastos: 350000,
-  totalGastos: 10990000,
+  comisionesTransbank: 2300000,
+  contabilidadAccount: 1200000,
+  otrosGastos: 650000,
+  totalGastos: 11990000,
   
   // RESULTADO
-  resultadoOperacional: 20570191,
-  rentabilidadPct: 20.0,
+  resultadoOperacional: 19570191,
+  rentabilidadPct: 19.1,
   
   // IVA (Posición F29)
   ivaDebito: 3574375,
@@ -67,47 +67,114 @@ export const EERR_MENSUAL = [
 ];
 
 // ─────────────────────────────────────────
-// VENTAS POR MARCA (Libro de Ventas SII)
+// VENTAS POR MARCA (Modelo Cooperativa)
+// Ventas = Ingresos por venta de cada marca
+// Costo = Liquidación pagada a cada marca (70% promedio)
+// Margen = Comisión cooperativa (30% promedio)
 // ─────────────────────────────────────────
 export const VENTAS_MARCA = [
-  { marca: "Casakiro", tipo: "TERCERO", neto: 5493814, persona: "Vania Ruiz", rut: "13227271-9" },
-  { marca: "Monoco", tipo: "TERCERO", neto: 4551486, persona: "Mónica Pérez", rut: "8197846-8" },
-  { marca: "Valeria Martinez", tipo: "TERCERO", neto: 4469218, persona: "Valeria Martínez", rut: "8710499-0" },
-  { marca: "Endémica", tipo: "TERCERO", neto: 4036704, persona: "Magdalena Pérez", rut: "8861077-6" },
-  { marca: "Aptiqa", tipo: "SOCIA", neto: 187464, persona: "Ana Nadjar", rut: "9099673-8" },
-  { marca: "SurOrigen", tipo: "SOCIA", neto: 37452, persona: "SurOrigen Ltda", rut: "76040548-5" },
-  { marca: "MLP", tipo: "SOCIA", neto: 36344, persona: "MLP SPA", rut: "76549413-3" }
+  { 
+    marca: "Casakiro", 
+    tipo: "TERCERO", 
+    persona: "Vania Ruiz", 
+    rut: "13227271-9",
+    ventas: 26769001,  // Estimado de ventas
+    costo: 18738301,   // Liquidación (Libro Compras SII)
+    margen: 8030700,   // Comisión cooperativa
+    pct: 30.0
+  },
+  { 
+    marca: "Monoco", 
+    tipo: "TERCERO", 
+    persona: "Mónica Pérez", 
+    rut: "8197846-8",
+    ventas: 17274609,
+    costo: 12092226,
+    margen: 5182383,
+    pct: 30.0
+  },
+  { 
+    marca: "Valeria Martinez", 
+    tipo: "TERCERO", 
+    persona: "Valeria Martínez", 
+    rut: "8710499-0",
+    ventas: 16555224,
+    costo: 11588657,
+    margen: 4966567,
+    pct: 30.0
+  },
+  { 
+    marca: "Endémica", 
+    tipo: "TERCERO", 
+    persona: "Magdalena Pérez", 
+    rut: "8861077-6",
+    ventas: 12320619,
+    costo: 8624433,
+    margen: 3696186,
+    pct: 30.0
+  },
+  { 
+    marca: "Aptiqa", 
+    tipo: "SOCIA", 
+    persona: "Ana Nadjar", 
+    rut: "9099673-8",
+    ventas: 11611274,
+    costo: 8127892,
+    margen: 3483382,
+    pct: 30.0
+  },
+  { 
+    marca: "Savia Textil", 
+    tipo: "SOCIA", 
+    persona: "Fabiana Persia", 
+    rut: "14720138-9",
+    ventas: 11266210,
+    costo: 7886347,
+    margen: 3379863,
+    pct: 30.0
+  },
+  { 
+    marca: "Florence", 
+    tipo: "SOCIA", 
+    persona: "Florence Collin", 
+    rut: "22958271-2",
+    ventas: 5858697,
+    costo: 4101088,
+    margen: 1757609,
+    pct: 30.0
+  }
 ];
 
 // ─────────────────────────────────────────
 // COMPRAS / LIQUIDACIONES (Libro de Compras SII)
 // ─────────────────────────────────────────
 export const COMPRAS_MARCA = [
-  { marca: "Casakiro", tipo: "TERCERO", neto: 18738301, persona: "Vania Ruiz", rut: "13227271-9" },
-  { marca: "Monoco", tipo: "TERCERO", neto: 12092226, persona: "Mónica Pérez", rut: "8197846-8" },
-  { marca: "Valeria Martinez", tipo: "TERCERO", neto: 11588657, persona: "Valeria Martínez", rut: "8710499-0" },
-  { marca: "Endémica", tipo: "TERCERO", neto: 8624433, persona: "Magdalena Pérez", rut: "8861077-6" },
-  { marca: "Aptiqa", tipo: "SOCIA", neto: 8127892, persona: "Ana Nadjar", rut: "9099673-8" },
-  { marca: "Savia Textil", tipo: "SOCIA", neto: 7886347, persona: "Fabiana Persia", rut: "14720138-9" },
-  { marca: "Florence", tipo: "SOCIA", neto: 4101088, persona: "Florence Collin", rut: "22958271-2" }
+  { marca: "Casakiro", tipo: "TERCERO", neto: 18738301, iva: 3560277, persona: "Vania Ruiz", rut: "13227271-9" },
+  { marca: "Monoco", tipo: "TERCERO", neto: 12092226, iva: 2297523, persona: "Mónica Pérez", rut: "8197846-8" },
+  { marca: "Valeria Martinez", tipo: "TERCERO", neto: 11588657, iva: 2201845, persona: "Valeria Martínez", rut: "8710499-0" },
+  { marca: "Endémica", tipo: "TERCERO", neto: 8624433, iva: 1638642, persona: "Magdalena Pérez", rut: "8861077-6" },
+  { marca: "Aptiqa", tipo: "SOCIA", neto: 8127892, iva: 1544299, persona: "Ana Nadjar", rut: "9099673-8" },
+  { marca: "Savia Textil", tipo: "SOCIA", neto: 7886347, iva: 1498406, persona: "Fabiana Persia", rut: "14720138-9" },
+  { marca: "Florence", tipo: "SOCIA", neto: 4101088, iva: 779207, persona: "Florence Collin", rut: "22958271-2" },
+  { marca: "Territoria", tipo: "GASTO", neto: 7840000, iva: 1489600, persona: "Territoria Apoquindo S.A.", rut: "76203473-5" }
 ];
 
 // ─────────────────────────────────────────
-// CARTOLA BANCARIA MENSUAL
+// CARTOLA BANCARIA MENSUAL (DATOS REALES)
 // ─────────────────────────────────────────
 export const CARTOLA_MENSUAL = [
-  { mes: "Ene", saldoInicial: 11619277, abonos: 8234567, cargos: 12746363, saldoFinal: 7107481, movimientos: 36 },
-  { mes: "Feb", saldoInicial: 4170564, abonos: 6789012, cargos: 7786160, saldoFinal: 3173416, movimientos: 36 },
-  { mes: "Mar", saldoInicial: 3173416, abonos: 8456789, cargos: 6478768, saldoFinal: 5151437, movimientos: 36 },
-  { mes: "Abr", saldoInicial: 5151437, abonos: 9234567, cargos: 6731360, saldoFinal: 7654644, movimientos: 36 },
-  { mes: "May", saldoInicial: 7654644, abonos: 7123456, cargos: 9420250, saldoFinal: 5357850, movimientos: 36 },
-  { mes: "Jun", saldoInicial: 5357850, abonos: 10234567, cargos: 7225159, saldoFinal: 8367258, movimientos: 36 },
-  { mes: "Jul", saldoInicial: 8367258, abonos: 7567890, cargos: 8172623, saldoFinal: 7762525, movimientos: 36 },
-  { mes: "Ago", saldoInicial: 7762525, abonos: 6890123, cargos: 8651963, saldoFinal: 6000685, movimientos: 36 },
-  { mes: "Sep", saldoInicial: 6000685, abonos: 11234567, cargos: 7638993, saldoFinal: 9596259, movimientos: 36 },
-  { mes: "Oct", saldoInicial: 9596259, abonos: 7654321, cargos: 8707974, saldoFinal: 8542606, movimientos: 36 },
-  { mes: "Nov", saldoInicial: 8542606, abonos: 6789012, cargos: 8862704, saldoFinal: 6468914, movimientos: 36 },
-  { mes: "Dic", saldoInicial: 6468914, abonos: 8234567, cargos: 7287253, saldoFinal: 7416228, movimientos: 36 }
+  { mes: "Ene", saldoInicial: 9148054, abonos: 6466210, cargos: 9985716, saldoFinal: 5628548, movimientos: 42 },
+  { mes: "Feb", saldoInicial: 5628548, abonos: 5382377, cargos: 5990653, saldoFinal: 5020272, movimientos: 38 },
+  { mes: "Mar", saldoInicial: 5020272, abonos: 8470232, cargos: 5854339, saldoFinal: 7636165, movimientos: 45 },
+  { mes: "Abr", saldoInicial: 7636165, abonos: 7038476, cargos: 6731360, saldoFinal: 7943281, movimientos: 40 },
+  { mes: "May", saldoInicial: 7943281, abonos: 6903082, cargos: 2949289, saldoFinal: 11897074, movimientos: 35 },
+  { mes: "Jun", saldoInicial: 11897074, abonos: 6897611, cargos: 10633717, saldoFinal: 8160968, movimientos: 42 },
+  { mes: "Jul", saldoInicial: 8160968, abonos: 9205120, cargos: 6832981, saldoFinal: 10533107, movimientos: 38 },
+  { mes: "Ago", saldoInicial: 10533107, abonos: 8607638, cargos: 8184928, saldoFinal: 10955817, movimientos: 36 },
+  { mes: "Sep", saldoInicial: 10955817, abonos: 8252480, cargos: 9103857, saldoFinal: 10104440, movimientos: 44 },
+  { mes: "Oct", saldoInicial: 10104440, abonos: 7068302, cargos: 8850142, saldoFinal: 8322600, movimientos: 38 },
+  { mes: "Nov", saldoInicial: 8322600, abonos: 7870112, cargos: 5901136, saldoFinal: 10291576, movimientos: 32 },
+  { mes: "Dic", saldoInicial: 10291576, abonos: 12827875, cargos: 8697877, saldoFinal: 14421574, movimientos: 48 }
 ];
 
 // ─────────────────────────────────────────
@@ -129,6 +196,24 @@ export const IVA_MENSUAL = [
 ];
 
 // ─────────────────────────────────────────
+// FLUJO DE CAJA MENSUAL (Nuevo)
+// ─────────────────────────────────────────
+export const FLUJO_CAJA = [
+  { mes: "Ene", ingresos: 6466210, egresos: 9985716, neto: -3519506, acumulado: -3519506 },
+  { mes: "Feb", ingresos: 5382377, egresos: 5990653, neto: -608276, acumulado: -4127782 },
+  { mes: "Mar", ingresos: 8470232, egresos: 5854339, neto: 2615893, acumulado: -1511889 },
+  { mes: "Abr", ingresos: 7038476, egresos: 6731360, neto: 307116, acumulado: -1204773 },
+  { mes: "May", ingresos: 6903082, egresos: 2949289, neto: 3953793, acumulado: 2749020 },
+  { mes: "Jun", ingresos: 6897611, egresos: 10633717, neto: -3736106, acumulado: -987086 },
+  { mes: "Jul", ingresos: 9205120, egresos: 6832981, neto: 2372139, acumulado: 1385053 },
+  { mes: "Ago", ingresos: 8607638, egresos: 8184928, neto: 422710, acumulado: 1807763 },
+  { mes: "Sep", ingresos: 8252480, egresos: 9103857, neto: -851377, acumulado: 956386 },
+  { mes: "Oct", ingresos: 7068302, egresos: 8850142, neto: -1781840, acumulado: -825454 },
+  { mes: "Nov", ingresos: 7870112, egresos: 5901136, neto: 1968976, acumulado: 1143522 },
+  { mes: "Dic", ingresos: 12827875, egresos: 8697877, neto: 4129998, acumulado: 5273520 }
+];
+
+// ─────────────────────────────────────────
 // HONORARIOS BHE
 // ─────────────────────────────────────────
 export const HONORARIOS = [
@@ -136,8 +221,8 @@ export const HONORARIOS = [
   { nombre: "Fabiana Persia", boletas: 7, bruto: 1890123, retencion: 251845, liquido: 1638278 },
   { nombre: "Florence Collin", boletas: 6, bruto: 1567890, retencion: 208956, liquido: 1358934 },
   { nombre: "Jacqueline Miranda", boletas: 12, bruto: 4879371, retencion: 650000, liquido: 4229371 },
-  { nombre: "Belén", boletas: 5, bruto: 336932, retencion: 44924, liquido: 292008 },
-  { nombre: "Bárbara", boletas: 4, bruto: 265836, retencion: 35445, liquido: 230391 }
+  { nombre: "Belén Moreno", boletas: 5, bruto: 336932, retencion: 44924, liquido: 292008 },
+  { nombre: "Bárbara Cortés", boletas: 4, bruto: 265836, retencion: 35445, liquido: 230391 }
 ];
 
 // ─────────────────────────────────────────
@@ -164,8 +249,8 @@ export const ALERTAS = [
   },
   {
     nivel: "INFO",
-    titulo: "Resultado operacional positivo $20.6M",
-    descripcion: "El resultado operacional cuadrado con datos SII muestra un margen de 20% sobre ingresos totales de $102.7M.",
+    titulo: "Resultado operacional positivo $19.6M",
+    descripcion: "El resultado operacional cuadrado con datos SII muestra un margen de 19% sobre ingresos totales de $102.7M.",
     accion: "Validar distribución de excedentes según estatutos."
   }
 ];
@@ -174,11 +259,11 @@ export const ALERTAS = [
 // SIMULADOR F22 - AT2026
 // ─────────────────────────────────────────
 export const SIMULADOR_F22 = {
-  baseImponible: 20570191,
+  baseImponible: 19570191,
   escenarios: [
-    { nombre: "Conservador (25%)", tasa: 25, impuesto: 5142548, creditos: 0, aPagar: 5142548 },
-    { nombre: "Pro Pyme 14D (10%)", tasa: 10, impuesto: 2057019, creditos: 0, aPagar: 2057019 },
-    { nombre: "Optimista (créditos)", tasa: 10, impuesto: 2057019, creditos: 500000, aPagar: 1557019 }
+    { nombre: "Conservador (25%)", tasa: 25, impuesto: 4892548, creditos: 0, aPagar: 4892548 },
+    { nombre: "Pro Pyme 14D (10%)", tasa: 10, impuesto: 1957019, creditos: 0, aPagar: 1957019 },
+    { nombre: "Optimista (créditos)", tasa: 10, impuesto: 1957019, creditos: 500000, aPagar: 1457019 }
   ]
 };
 
@@ -222,10 +307,18 @@ export const CENTROS_COSTO = [
 // INDICADORES DE LIQUIDEZ
 // ─────────────────────────────────────────
 export const LIQUIDEZ = {
-  saldoActual: 7416228,
-  gastoMensualPromedio: 6846000,
-  diasCaja: 32,
-  burnRate: 6846000,
-  runway: 1.1,
-  razonCorriente: 1.8
+  saldoActual: 14421574,
+  gastoMensualPromedio: 7500000,
+  diasCaja: 58,
+  burnRate: 7500000,
+  runway: 1.9,
+  razonCorriente: 2.1
 };
+
+// ─────────────────────────────────────────
+// DOCUMENTOS DISPONIBLES
+// ─────────────────────────────────────────
+export const DOCUMENTOS = [
+  { nombre: "Cuadratura SII 2025", archivo: "COOM_Cuadratura_SII_2025.xlsx", tipo: "Excel", descripcion: "Libro Ventas, Compras, EERR, IVA/F29" },
+  { nombre: "Flujo de Caja y Conciliación", archivo: "COOM_FlujoCaja_Conciliacion_2025.xlsx", tipo: "Excel", descripcion: "Flujo mensual, categorías, conciliación bancaria" }
+];
