@@ -18,31 +18,7 @@ import { FlujoCaja } from './components/FlujoCaja';
 import { Documentos } from './components/Documentos';
 import { EMPRESA } from './data/financialData';
 
-// Componentes placeholder para secciones pendientes
-function PlaceholderPage({ title, description }) {
-  return (
-    <div>
-      <div style={{ marginBottom: 'var(--space-6)' }}>
-        <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>
-          {title}
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-          {description}
-        </p>
-      </div>
-      <div style={{ 
-        background: 'var(--bg-subtle)', 
-        padding: 'var(--space-8)', 
-        borderRadius: 'var(--radius-lg)',
-        textAlign: 'center'
-      }}>
-        <p style={{ color: 'var(--text-muted)' }}>
-          Sección en desarrollo
-        </p>
-      </div>
-    </div>
-  );
-}
+import { ConciliacionBancaria } from './components/ConciliacionBancaria';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('resumen');
@@ -68,7 +44,7 @@ export default function App() {
       case 'banco':
         return <CartolaBancaria />;
       case 'conciliacion':
-        return <PlaceholderPage title="Conciliación Bancaria" description="Cruce libro banco vs cartola" />;
+        return <ConciliacionBancaria />;
       case 'flujo':
         return <FlujoCaja />;
       case 'cuentas':
