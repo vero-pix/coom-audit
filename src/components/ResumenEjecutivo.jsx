@@ -214,6 +214,10 @@ export function ResumenEjecutivo() {
             </h4>
             <div style={{ marginBottom: 'var(--space-3)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <span>Honorarios Vendedoras (BHE)</span>
+                <span className="font-mono">{formatCLP(KPI_DATA.honorariosVendedoras)}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
                 <span>Arriendo Territoria</span>
                 <span className="font-mono">{formatCLP(KPI_DATA.arriendoTerritoria)}</span>
               </div>
@@ -243,6 +247,108 @@ export function ResumenEjecutivo() {
               <span className="font-mono">{formatCLP(KPI_DATA.totalGastos)}</span>
             </div>
           </div>
+        </div>
+      </Card>
+
+      {/* De cada $100 que entran */}
+      <Card title="De cada $100 que entran" style={{ marginTop: 'var(--space-5)' }}>
+        <div style={{ padding: 'var(--space-4)' }}>
+          {(() => {
+            const total = KPI_DATA.ingresosTotales;
+            const items = [
+              { label: 'Marcas', value: KPI_DATA.totalLiquidaciones, color: 'var(--text-primary)' },
+              { label: 'Vendedoras', value: KPI_DATA.honorariosVendedoras, color: '#534AB7' },
+              { label: 'Arriendo', value: KPI_DATA.arriendoTerritoria, color: 'var(--text-secondary)' },
+              { label: 'Transbank', value: KPI_DATA.comisionesTransbank, color: '#888780' },
+              { label: 'Otros', value: KPI_DATA.contabilidadAccount + KPI_DATA.otrosGastos, color: '#B0ADA6' },
+              { label: 'Resultado', value: KPI_DATA.resultadoOperacional, color: 'var(--color-success)' }
+            ];
+            return (
+              <>
+                {/* Barra apilada */}
+                <div style={{
+                  display: 'flex',
+                  height: '40px',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  marginBottom: 'var(--space-4)'
+                }}>
+                  {items.map((item, idx) => {
+                    const pct = Math.round(item.value / total * 100);
+                    return (
+                      <div key={idx} style={{
+                        width: `${pct}%`,
+                        background: item.color,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: pct >= 5 ? '13px' : '10px',
+                        fontWeight: 'var(--font-bold)',
+                        color: 'white',
+                        minWidth: pct >= 2 ? 'auto' : '0'
+                      }}>
+                        {pct >= 3 ? pct : ''}
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Leyenda */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', fontSize: 'var(--text-sm)' }}>
+                  {items.map((item, idx) => {
+                    const pct = Math.round(item.value / total * 100);
+                    return (
+                      <span key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ width: '10px', height: '10px', borderRadius: '2px', background: item.color }}></span>
+                        ${pct} → {item.label}
+                      </span>
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })()}
+        </div>
+      </Card>
+
+      {/* Situación Patrimonial */}
+      <Card title="Situación Patrimonial" style={{ marginTop: 'var(--space-5)' }}>
+        <div style={{ padding: 'var(--space-4)' }}>
+          {(() => {
+            const capital = 1500000;
+            const perdidasAcum = 5099473;
+            const resultadoAC2025 = KPI_DATA.resultadoOperacional;
+            const cpts = capital - perdidasAcum + resultadoAC2025;
+            const items = [
+              { label: 'Capital Aportado', value: capital },
+              { label: 'Pérdidas Acumuladas (AT2024)', value: -perdidasAcum },
+              { label: 'Resultado AC2025 (estimado)', value: resultadoAC2025 },
+            ];
+            return (
+              <>
+                <div style={{ marginBottom: 'var(--space-4)' }}>
+                  {items.map((item, idx) => (
+                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid var(--border-light)', fontSize: 'var(--text-sm)' }}>
+                      <span>{item.label}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', color: item.value < 0 ? 'var(--color-danger)' : 'var(--text-primary)' }}>
+                        {formatCLP(item.value)}
+                      </span>
+                    </div>
+                  ))}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-bold)' }}>
+                    <span>CPTS Estimado</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', color: cpts >= 0 ? 'var(--color-success)' : 'var(--color-danger)' }}>
+                      {formatCLP(cpts)}
+                    </span>
+                  </div>
+                </div>
+                <div style={{ background: 'var(--bg-subtle)', padding: 'var(--space-3)', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                  El CPTS (Capital Propio Tributario Simplificado) cerró en -$3.599.473 según F22 AT2025.
+                  Con el resultado estimado de AC2025, el CPTS se proyecta en {formatCLP(cpts)}.
+                  {cpts > 0 ? ' Esto permitiría salir de la zona de CPTS negativo.' : ' Se mantiene negativo — no es posible distribuir excedentes legalmente (Art. 36 LGC).'}
+                </div>
+              </>
+            );
+          })()}
         </div>
       </Card>
 

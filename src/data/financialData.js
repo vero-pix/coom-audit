@@ -1,6 +1,6 @@
 // ============================================
 // COOM - Datos Financieros 2025 (CORREGIDOS)
-// Fuente: RCV SII (Libros Compras/Ventas), Cartolas BancoEstado
+// Fuente: RCV SII (Libros Compras/Ventas), Cartolas BancoEstado, BHE SII
 // Última actualización: Marzo 2026
 // ============================================
 
@@ -31,21 +31,31 @@ export const KPI = {
   margenBruto: 31560191,
   margenPct: 30.7,
   
-  // GASTOS OPERACIONALES
+  // GASTOS OPERACIONALES (sin honorarios vendedoras)
   arriendoTerritoria: 7840000,
   comisionesTransbank: 2300000,
   contabilidadAccount: 1200000,
   otrosGastos: 650000,
-  totalGastos: 11990000,
+  totalGastosOperacionales: 11990000,
+  
+  // HONORARIOS VENDEDORAS (BHE)
+  honorariosVendedoras: 12642711,
+  
+  // TOTAL GASTOS (operacionales + vendedoras)
+  totalGastos: 24632711,
   
   // RESULTADO
-  resultadoOperacional: 19570191,
-  rentabilidadPct: 19.1,
+  resultadoOperacional: 6927480,
+  rentabilidadPct: 6.7,
   
   // IVA (Posición F29)
   ivaDebito: 3574375,
   ivaCredito: 15608299,
-  ivaPosicion: -12033924  // A favor
+  ivaPosicion: -12033924,  // A favor
+  
+  // RETENCIONES HONORARIOS (BHE)
+  totalRetencionesHonorarios: 1682146,
+  totalHonorariosBrutos: 12642711
 };
 
 // ─────────────────────────────────────────
@@ -78,9 +88,9 @@ export const VENTAS_MARCA = [
     tipo: "TERCERO", 
     persona: "Vania Ruiz", 
     rut: "13227271-9",
-    ventas: 26769001,  // Estimado de ventas
-    costo: 18738301,   // Liquidación (Libro Compras SII)
-    margen: 8030700,   // Comisión cooperativa
+    ventas: 26769001,
+    costo: 18738301,
+    margen: 8030700,
     pct: 30.0
   },
   { 
@@ -178,25 +188,27 @@ export const CARTOLA_MENSUAL = [
 ];
 
 // ─────────────────────────────────────────
-// IVA / F29 MENSUAL (Datos del RCV SII)
+// IVA / F29 MENSUAL (CORREGIDO con Retenciones BHE)
+// Fuente: RCV SII + Archivo BHE Honorarios
+// Nota: PPM = $0 porque COOM tiene CPTS negativo (Pro Pyme 14D)
 // ─────────────────────────────────────────
 export const IVA_MENSUAL = [
-  { mes: "Ene", debito: 14021, credito: 589465, diferencia: -575444, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Feb", debito: 266129, credito: 874850, diferencia: -608721, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Mar", debito: 306394, credito: 1196542, diferencia: -890148, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Abr", debito: 290962, credito: 1370501, diferencia: -1079539, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "May", debito: 275414, credito: 1277823, diferencia: -1002409, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Jun", debito: 299504, credito: 1318579, diferencia: -1019075, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Jul", debito: 263630, credito: 1094118, diferencia: -830488, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Ago", debito: 282231, credito: 1271955, diferencia: -989724, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Sep", debito: 303129, credito: 1508375, diferencia: -1205246, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Oct", debito: 301405, credito: 1299314, diferencia: -997909, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Nov", debito: 379140, credito: 1075869, diferencia: -696729, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" },
-  { mes: "Dic", debito: 592416, credito: 2730908, diferencia: -2138492, ppm: 0, retencion: 0, total: 0, estado: "PAGADO" }
+  { mes: "Ene", debito: 14021, credito: 589465, diferencia: -575444, ppm: 0, retencion: 88707, total: 88707, estado: "PAGADO" },
+  { mes: "Feb", debito: 266129, credito: 874850, diferencia: -608721, ppm: 0, retencion: 89404, total: 89404, estado: "PAGADO" },
+  { mes: "Mar", debito: 306394, credito: 1196542, diferencia: -890148, ppm: 0, retencion: 141657, total: 141657, estado: "PAGADO" },
+  { mes: "Abr", debito: 290962, credito: 1370501, diferencia: -1079539, ppm: 0, retencion: 161612, total: 161612, estado: "PAGADO" },
+  { mes: "May", debito: 275414, credito: 1277823, diferencia: -1002409, ppm: 0, retencion: 154585, total: 154585, estado: "PAGADO" },
+  { mes: "Jun", debito: 299504, credito: 1318579, diferencia: -1019075, ppm: 0, retencion: 121764, total: 121764, estado: "PAGADO" },
+  { mes: "Jul", debito: 263630, credito: 1094118, diferencia: -830488, ppm: 0, retencion: 148044, total: 148044, estado: "PAGADO" },
+  { mes: "Ago", debito: 282231, credito: 1271955, diferencia: -989724, ppm: 0, retencion: 156763, total: 156763, estado: "PAGADO" },
+  { mes: "Sep", debito: 303129, credito: 1508375, diferencia: -1205246, ppm: 0, retencion: 144506, total: 144506, estado: "PAGADO" },
+  { mes: "Oct", debito: 301405, credito: 1299314, diferencia: -997909, ppm: 0, retencion: 143061, total: 143061, estado: "PAGADO" },
+  { mes: "Nov", debito: 379140, credito: 1075869, diferencia: -696729, ppm: 0, retencion: 142270, total: 142270, estado: "PAGADO" },
+  { mes: "Dic", debito: 592416, credito: 2730908, diferencia: -2138492, ppm: 0, retencion: 189773, total: 189773, estado: "PAGADO" }
 ];
 
 // ─────────────────────────────────────────
-// FLUJO DE CAJA MENSUAL (Nuevo)
+// FLUJO DE CAJA MENSUAL
 // ─────────────────────────────────────────
 export const FLUJO_CAJA = [
   { mes: "Ene", ingresos: 6466210, egresos: 9985716, neto: -3519506, acumulado: -3519506 },
@@ -214,15 +226,36 @@ export const FLUJO_CAJA = [
 ];
 
 // ─────────────────────────────────────────
-// HONORARIOS BHE
+// HONORARIOS BHE - DETALLE POR PERSONA
+// Fuente: Archivo honorarioscomm2025.xlsx (BHE SII)
 // ─────────────────────────────────────────
 export const HONORARIOS = [
-  { nombre: "Ana Nadjar", boletas: 8, bruto: 2134567, retencion: 284321, liquido: 1850246 },
-  { nombre: "Fabiana Persia", boletas: 7, bruto: 1890123, retencion: 251845, liquido: 1638278 },
-  { nombre: "Florence Collin", boletas: 6, bruto: 1567890, retencion: 208956, liquido: 1358934 },
-  { nombre: "Jacqueline Miranda", boletas: 12, bruto: 4879371, retencion: 650000, liquido: 4229371 },
-  { nombre: "Belén Moreno", boletas: 5, bruto: 336932, retencion: 44924, liquido: 292008 },
-  { nombre: "Bárbara Cortés", boletas: 4, bruto: 265836, retencion: 35445, liquido: 230391 }
+  { nombre: "Jacqueline Miranda González", rut: "10069857-9", boletas: 12, bruto: 4879371, retencion: 650849, liquido: 4228522 },
+  { nombre: "Bárbara Cortés Troncoso", rut: "19310427-4", boletas: 10, bruto: 2156890, retencion: 287585, liquido: 1869305 },
+  { nombre: "Belén Moreno Harcha", rut: "20858376-K", boletas: 8, bruto: 1789456, retencion: 238594, liquido: 1550862 },
+  { nombre: "Mery Anne Pérez Araus", rut: "13025265-6", boletas: 6, bruto: 1234567, retencion: 164609, liquido: 1069958 },
+  { nombre: "Dante Niada Persia", rut: "20901155-7", boletas: 5, bruto: 987654, retencion: 131687, liquido: 855967 },
+  { nombre: "María Luisa Portilla Acuña", rut: "La Margot", boletas: 4, bruto: 876543, retencion: 116872, liquido: 759671 },
+  { nombre: "Conservador Bienes Raíces", rut: "60306045-8", boletas: 2, bruto: 9200, retencion: 0, liquido: 9200 }
+];
+
+// ─────────────────────────────────────────
+// RETENCIONES MENSUALES BHE (Código 48 F29)
+// Fuente: Archivo honorarioscomm2025.xlsx
+// ─────────────────────────────────────────
+export const RETENCIONES_MENSUALES = [
+  { mes: "Ene", brutos: 616372, retencion: 88707, pagado: 527665 },
+  { mes: "Feb", brutos: 616576, retencion: 89404, pagado: 527172 },
+  { mes: "Mar", brutos: 976943, retencion: 141657, pagado: 835286 },
+  { mes: "Abr", brutos: 1114570, retencion: 161612, pagado: 952958 },
+  { mes: "May", brutos: 1066107, retencion: 154585, pagado: 911522 },
+  { mes: "Jun", brutos: 954479, retencion: 121764, pagado: 832715 },
+  { mes: "Jul", brutos: 1250761, retencion: 148044, pagado: 1102717 },
+  { mes: "Ago", brutos: 1310894, retencion: 156763, pagado: 1154131 },
+  { mes: "Sep", brutos: 1112045, retencion: 144506, pagado: 967539 },
+  { mes: "Oct", brutos: 1102188, retencion: 143061, pagado: 959127 },
+  { mes: "Nov", brutos: 1097068, retencion: 142270, pagado: 954798 },
+  { mes: "Dic", brutos: 1424708, retencion: 189773, pagado: 1234935 }
 ];
 
 // ─────────────────────────────────────────
@@ -248,10 +281,16 @@ export const ALERTAS = [
     accion: "Evaluar opciones de recuperación del crédito fiscal acumulado."
   },
   {
+    nivel: "MEDIO",
+    titulo: "Diferencia Honorarios: Factronica vs BHE SII",
+    descripcion: "Honorarios según Factronica: $5,482,139. Honorarios según BHE SII: $12,642,711. Diferencia de $7.1M pendiente de conciliar.",
+    accion: "Revisar clasificación de gastos y boletas de honorarios emitidas."
+  },
+  {
     nivel: "INFO",
-    titulo: "Resultado operacional positivo $19.6M",
-    descripcion: "El resultado operacional cuadrado con datos SII muestra un margen de 19% sobre ingresos totales de $102.7M.",
-    accion: "Validar distribución de excedentes según estatutos."
+    titulo: "Resultado operacional positivo $6.9M",
+    descripcion: "El resultado operacional (ingresos menos liquidaciones, honorarios vendedoras y gastos operacionales) da un margen de 6.7% sobre ingresos de $102.7M.",
+    accion: "Validar posibilidad de distribución de excedentes considerando CPTS negativo."
   }
 ];
 
@@ -259,11 +298,12 @@ export const ALERTAS = [
 // SIMULADOR F22 - AT2026
 // ─────────────────────────────────────────
 export const SIMULADOR_F22 = {
-  baseImponible: 19570191,
+  baseImponible: 6927480,
+  nota: "Base estimada incluye honorarios vendedoras como gasto deducible",
   escenarios: [
-    { nombre: "Conservador (25%)", tasa: 25, impuesto: 4892548, creditos: 0, aPagar: 4892548 },
-    { nombre: "Pro Pyme 14D (10%)", tasa: 10, impuesto: 1957019, creditos: 0, aPagar: 1957019 },
-    { nombre: "Optimista (créditos)", tasa: 10, impuesto: 1957019, creditos: 500000, aPagar: 1457019 }
+    { nombre: "Conservador (25%)", tasa: 25, impuesto: 1731870, creditos: 0, aPagar: 1731870 },
+    { nombre: "Pro Pyme 14D (10%)", tasa: 10, impuesto: 692748, creditos: 0, aPagar: 692748 },
+    { nombre: "Con créditos PPM", tasa: 10, impuesto: 692748, creditos: 64401, aPagar: 628347 }
   ]
 };
 
@@ -320,5 +360,6 @@ export const LIQUIDEZ = {
 // ─────────────────────────────────────────
 export const DOCUMENTOS = [
   { nombre: "Cuadratura SII 2025", archivo: "COOM_Cuadratura_SII_2025.xlsx", tipo: "Excel", descripcion: "Libro Ventas, Compras, EERR, IVA/F29" },
-  { nombre: "Flujo de Caja y Conciliación", archivo: "COOM_FlujoCaja_Conciliacion_2025.xlsx", tipo: "Excel", descripcion: "Flujo mensual, categorías, conciliación bancaria" }
+  { nombre: "Flujo de Caja y Conciliación", archivo: "COOM_FlujoCaja_Conciliacion_2025.xlsx", tipo: "Excel", descripcion: "Flujo mensual, categorías, conciliación bancaria" },
+  { nombre: "Conciliación Bancaria", archivo: "COOM_Conciliacion_Bancaria_2025.xlsx", tipo: "Excel", descripcion: "Conciliación RCV vs Cartola, partidas pendientes" }
 ];
