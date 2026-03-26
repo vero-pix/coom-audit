@@ -3,6 +3,13 @@
 // ============================================
 
 /**
+ * Suma valores de un array por key
+ */
+export function sumBy(arr, key) {
+  return arr.reduce((acc, item) => acc + (item[key] || 0), 0);
+}
+
+/**
  * Formatea número como moneda chilena (CLP)
  * @param {number} value - Valor a formatear
  * @param {boolean} showSign - Mostrar signo +/-

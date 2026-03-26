@@ -1,94 +1,50 @@
 // ============================================
-// COOM - Sidebar Navigation
+// COOM - Sidebar (v2 - 6 módulos)
 // ============================================
-
 import { ALERTAS } from '../data/financialData';
 
-const NAV_SECTIONS = [
-  {
-    title: 'General',
-    items: [
-      { id: 'resumen', label: 'Resumen Ejecutivo', icon: '◎' },
-      { id: 'alertas', label: 'Alertas Auditoría', icon: '⚠', badge: ALERTAS.filter(a => a.nivel === 'CRITICO').length }
-    ]
-  },
-  {
-    title: 'Operaciones',
-    items: [
-      { id: 'ventas', label: 'Ventas por Marca', icon: '◈' },
-      { id: 'costos', label: 'Costos y Gastos', icon: '◇' },
-      { id: 'excedentes', label: 'Excedentes Socias', icon: '◆' },
-      { id: 'honorarios', label: 'Honorarios BHE', icon: '◇' }
-    ]
-  },
-  {
-    title: 'Tributario',
-    items: [
-      { id: 'iva', label: 'IVA / F29', icon: '▣' },
-      { id: 'f22', label: 'Simulador F22', icon: '▤' }
-    ]
-  },
-  {
-    title: 'Tesorería',
-    items: [
-      { id: 'banco', label: 'Cartola Bancaria', icon: '▥' },
-      { id: 'conciliacion', label: 'Conciliación', icon: '▦' },
-      { id: 'flujo', label: 'Flujo de Caja', icon: '▧' }
-    ]
-  },
-  {
-    title: 'Configuración',
-    items: [
-      { id: 'cuentas', label: 'Plan de Cuentas', icon: '▨' },
-      { id: 'documentos', label: 'Documentos', icon: '▩' }
-    ]
-  }
+const NAV = [
+  { id: 'resumen', label: 'Resumen', icon: '○' },
+  { id: 'marca', label: 'Mi marca', icon: '◆' },
+  { id: 'gastos', label: 'Gastos', icon: '◇' },
+  { id: 'patrimonio', label: 'Patrimonio', icon: '□' },
+  { id: 'alertas', label: 'Alertas', icon: '△', badge: ALERTAS.filter(a => a.nivel === 'CRITICO' || a.nivel === 'ALTO').length },
+  { id: 'documentos', label: 'Documentos', icon: '▪' },
 ];
 
 export function Sidebar({ activeSection, onSectionChange }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <div className="sidebar-logo">
-          <div className="sidebar-logo-icon">CO</div>
-          <div>
-            <div className="sidebar-logo-text">COOM</div>
-            <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>
-              Sistema de Apoyo Fzas
-            </div>
-          </div>
+        <div className="sidebar-logo">CO</div>
+        <div>
+          <div className="sidebar-title">COOM</div>
+          <div className="sidebar-subtitle">Sistema de Apoyo Fzas</div>
         </div>
       </div>
 
-      {NAV_SECTIONS.map(section => (
-        <div key={section.title} className="sidebar-section">
-          <div className="sidebar-section-title">{section.title}</div>
-          <ul className="sidebar-nav">
-            {section.items.map(item => (
-              <li
-                key={item.id}
-                className={`sidebar-nav-item ${activeSection === item.id ? 'active' : ''}`}
-                onClick={() => onSectionChange(item.id)}
-              >
-                <span style={{ fontSize: '0.9rem' }}>{item.icon}</span>
-                <span>{item.label}</span>
-                {item.badge > 0 && <span className="badge">{item.badge}</span>}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <nav className="sidebar-nav">
+        {NAV.map(item => (
+          <button
+            key={item.id}
+            className={`sidebar-item ${activeSection === item.id ? 'active' : ''}`}
+            onClick={() => onSectionChange(item.id)}
+          >
+            <span className="sidebar-icon">{item.icon}</span>
+            <span>{item.label}</span>
+            {item.badge > 0 && (
+              <span className="sidebar-badge">{item.badge}</span>
+            )}
+          </button>
+        ))}
+      </nav>
 
-      <div style={{ 
-        padding: '1rem 1.25rem', 
-        fontSize: '0.7rem', 
-        color: 'var(--text-muted)',
-        borderTop: '1px solid var(--border-light)',
-        marginTop: 'auto'
-      }}>
-        <div>RUT 65.220.032-K</div>
-        <div>Pro Pyme General 14D</div>
-        <div style={{ marginTop: '0.5rem' }}>Período: Ene - Dic 2025</div>
+      <div className="sidebar-footer">
+        <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+          RUT 65.220.032-K<br />
+          Pro Pyme General 14D<br />
+          Período: Ene - Dic 2025
+        </div>
       </div>
     </aside>
   );

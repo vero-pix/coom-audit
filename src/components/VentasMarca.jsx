@@ -1,197 +1,119 @@
 // ============================================
-// COOM - Ventas por Marca
+// COOM - Mi Marca (v2 - Account SPA)
 // ============================================
-
-import { Card, KPI, DataTable, Badge, Button } from './ui';
-import { formatCLP, formatPct, sumBy, exportToCSV } from '../utils/format';
-import { VENTAS_MARCA } from '../data/financialData';
+import { Card, KPI as KPIWidget, DataTable, Badge } from './ui';
+import { formatCLP, formatPct, sumBy } from '../utils/format';
+import { VENTAS_MARCA, EERR, EMPRESA, COSTO_VENTA_RESUMEN } from '../data/financialData';
 
 export function VentasMarca() {
-  const totales = {
-    ventas: sumBy(VENTAS_MARCA, 'ventas'),
-    costo: sumBy(VENTAS_MARCA, 'costo'),
-    margen: sumBy(VENTAS_MARCA, 'margen')
-  };
+  const totalVentas = sumBy(VENTAS_MARCA, 'ventas');
+  const totalLiq = sumBy(VENTAS_MARCA, 'liquidacion');
+  const totalComision = totalVentas - totalLiq;
+  const comisionPct = (totalComision / totalVentas) * 100;
 
-  const ventasSocias = sumBy(VENTAS_MARCA.filter(m => m.tipo === 'SOCIA'), 'ventas');
-  const ventasTerceros = sumBy(VENTAS_MARCA.filter(m => m.tipo === 'TERCERO'), 'ventas');
+  const marcas = VENTAS_MARCA.map(m => ({
+    ...m,
+    comision: m.ventas - m.liquidacion,
+    comisionPct: ((m.ventas - m.liquidacion) / m.ventas * 100),
+  })).sort((a, b) => b.ventas - a.ventas);
+
+  const maxVenta = marcas[0]?.ventas || 1;
 
   const columns = [
-    { 
-      key: 'marca', 
-      label: 'Marca / CC',
+    {
+      key: 'marca', label: 'Marca',
       render: (v, row) => (
-        <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-          {v}
-          <Badge variant={row.tipo === 'SOCIA' ? 'socia' : 'tercero'}>
-            {row.tipo}
-          </Badge>
-        </span>
+        <div>
+          <span style={{ fontWeight: 'var(--font-semibold)' }}>{v}</span>
+          <Badge variant={row.tipo === 'SOCIA' ? 'socia' : 'tercero'} style={{ marginLeft: '8px' }}>{row.tipo}</Badge>
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>{row.persona}</div>
+        </div>
       )
     },
     { key: 'ventas', label: 'Ventas', align: 'right', render: v => formatCLP(v) },
-    { key: 'costo', label: 'Costo', align: 'right', render: v => formatCLP(v), className: () => 'fin-costo' },
-    { 
-      key: 'margen', 
-      label: 'Margen', 
-      align: 'right', 
-      render: v => formatCLP(v),
-      className: (row) => row.margen >= 0 ? 'fin-resultado-positivo' : 'fin-resultado-negativo'
-    },
-    { key: 'pct', label: 'Margen %', align: 'right', render: v => formatPct(v) }
+    { key: 'liquidacion', label: 'Liquidación', align: 'right', render: v => formatCLP(v), className: () => 'fin-costo' },
+    { key: 'comision', label: 'Comisión COOM', align: 'right', render: v => formatCLP(v), className: () => 'fin-resultado-positivo' },
+    { key: 'comisionPct', label: '% Comisión', align: 'right', render: v => formatPct(v) },
   ];
-
-  const footer = {
-    marca: 'TOTAL',
-    ventas: formatCLP(totales.ventas),
-    costo: formatCLP(totales.costo),
-    margen: formatCLP(totales.margen),
-    pct: formatPct((totales.margen / totales.ventas) * 100)
-  };
-
-  const handleExport = () => {
-    exportToCSV(VENTAS_MARCA, [
-      { key: 'marca', label: 'Marca' },
-      { key: 'tipo', label: 'Tipo' },
-      { key: 'ventas', label: 'Ventas' },
-      { key: 'costo', label: 'Costo' },
-      { key: 'margen', label: 'Margen' },
-      { key: 'pct', label: 'Margen %' }
-    ], 'COOM_Ventas_Marca_2025');
-  };
 
   return (
     <div>
       <div style={{ marginBottom: 'var(--space-6)' }}>
         <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>
-          Ventas por Marca
+          Mi marca
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-          Rentabilidad por centro de costo · Año Comercial 2025
+          Ventas, liquidaciones y comisión por marca · {EMPRESA.periodo}
         </p>
       </div>
 
-      {/* KPIs */}
       <div className="kpi-grid" style={{ marginBottom: 'var(--space-6)' }}>
-        <KPI 
-          label="Ventas Totales" 
-          value={totales.ventas}
-        />
-        <KPI 
-          label="Margen Total" 
-          value={totales.margen}
-          detail={formatPct((totales.margen / totales.ventas) * 100)}
-        />
-        <KPI 
-          label="Ventas Socias" 
-          value={ventasSocias}
-          detail="Exento Art. 17"
-        />
-        <KPI 
-          label="Ventas Terceros" 
-          value={ventasTerceros}
-          detail="Gravado IVA"
-        />
+        <KPIWidget label="Ventas totales (boletas)" value={totalVentas} detail="ventasmarcas.xlsx" />
+        <KPIWidget label="Liquidaciones pagadas" value={totalLiq} detail="Libro compras RCV" />
+        <KPIWidget label="Comisión cooperativa" value={totalComision} detail={`${formatPct(comisionPct)} promedio`} />
+        <KPIWidget label="Marcas activas" value="7" format="text" detail="3 socias + 4 terceros" />
       </div>
 
-      {/* Tabla principal */}
-      <Card 
-        title="Detalle por Marca"
-        actions={
-          <Button variant="secondary" size="sm" onClick={handleExport}>
-            ↓ Exportar CSV
-          </Button>
-        }
-      >
-        <DataTable 
-          columns={columns}
-          data={VENTAS_MARCA}
-          footer={footer}
-        />
+      {/* Ranking visual */}
+      <Card title="Ranking por ventas" subtitle="Ventas totales por marca (boletas + registros internos)">
+        <div style={{ padding: 'var(--space-4)' }}>
+          {marcas.map((m, i) => (
+            <div key={i} style={{ marginBottom: 'var(--space-4)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontWeight: 'var(--font-semibold)' }}>{m.marca}</span>
+                  <Badge variant={m.tipo === 'SOCIA' ? 'socia' : 'tercero'}>{m.tipo}</Badge>
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 'var(--font-semibold)' }}>
+                  {formatCLP(m.ventas)}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '2px', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{
+                  width: `${(m.liquidacion / maxVenta) * 100}%`,
+                  background: m.tipo === 'SOCIA' ? '#185FA5' : 'var(--brand-beige-dark)',
+                  borderRadius: '4px 0 0 4px'
+                }} />
+                <div style={{
+                  width: `${(m.comision / maxVenta) * 100}%`,
+                  background: 'var(--color-success)',
+                  borderRadius: '0 4px 4px 0',
+                  opacity: 0.6
+                }} />
+              </div>
+              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', justifyContent: 'space-between' }}>
+                <span>{m.persona}</span>
+                <span>Comisión {formatPct(m.comisionPct)}</span>
+              </div>
+            </div>
+          ))}
+          <div style={{ display: 'flex', gap: '16px', marginTop: 'var(--space-4)', fontSize: '12px', color: 'var(--text-secondary)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ width: '12px', height: '8px', borderRadius: '2px', background: 'var(--brand-beige-dark)' }}></span>
+              Liquidación (va a la marca)
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ width: '12px', height: '8px', borderRadius: '2px', background: 'var(--color-success)', opacity: 0.6 }}></span>
+              Comisión (queda en COOM)
+            </span>
+          </div>
+        </div>
       </Card>
 
-      {/* Distribución visual */}
-      <div className="grid-2" style={{ marginTop: 'var(--space-5)' }}>
-        <Card title="Participación por Marca">
-          <div style={{ padding: 'var(--space-2)' }}>
-            {VENTAS_MARCA.map((marca, idx) => {
-              const pct = (marca.ventas / totales.ventas) * 100;
-              return (
-                <div key={idx} style={{ marginBottom: 'var(--space-4)' }}>
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    fontSize: 'var(--text-sm)',
-                    marginBottom: 'var(--space-1)'
-                  }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                      {marca.marca}
-                      <Badge variant={marca.tipo === 'SOCIA' ? 'socia' : 'tercero'}>
-                        {marca.tipo}
-                      </Badge>
-                    </span>
-                    <span className="font-mono">{formatPct(pct)}</span>
-                  </div>
-                  <div style={{ 
-                    height: '6px', 
-                    background: 'var(--bg-subtle)', 
-                    borderRadius: '3px',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{ 
-                      width: `${pct}%`,
-                      height: '100%',
-                      background: marca.tipo === 'SOCIA' ? 'var(--brand-beige-dark)' : 'var(--text-muted)'
-                    }} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Card>
-
-        <Card title="Análisis de Rentabilidad">
-          <div style={{ padding: 'var(--space-2)' }}>
-            <div style={{ 
-              background: 'var(--semantic-positive-soft)', 
-              padding: 'var(--space-4)', 
-              borderRadius: 'var(--radius-md)',
-              marginBottom: 'var(--space-4)'
-            }}>
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginBottom: 'var(--space-1)' }}>
-                Mayor Rentabilidad
-              </div>
-              <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-semibold)' }}>
-                Endémica — {formatPct(36.7)}
-              </div>
-            </div>
-
-            <div style={{ 
-              background: 'var(--bg-subtle)', 
-              padding: 'var(--space-4)', 
-              borderRadius: 'var(--radius-md)',
-              marginBottom: 'var(--space-4)'
-            }}>
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginBottom: 'var(--space-1)' }}>
-                Mayor Volumen
-              </div>
-              <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-semibold)' }}>
-                Casakiro — {formatCLP(21345678)}
-              </div>
-            </div>
-
-            <p style={{ 
-              fontSize: 'var(--text-xs)', 
-              color: 'var(--text-muted)', 
-              lineHeight: 1.5 
-            }}>
-              El margen promedio de {formatPct((totales.margen / totales.ventas) * 100)} es consistente 
-              con el modelo de comisiones de la cooperativa. Las variaciones menores entre marcas 
-              reflejan diferencias en mix de productos.
-            </p>
-          </div>
-        </Card>
-      </div>
+      {/* Tabla detalle */}
+      <Card title="Detalle por marca" style={{ marginTop: 'var(--space-5)' }}>
+        <DataTable
+          columns={columns}
+          data={marcas}
+          footer={{
+            marca: 'TOTAL',
+            ventas: formatCLP(totalVentas),
+            liquidacion: formatCLP(totalLiq),
+            comision: formatCLP(totalComision),
+            comisionPct: formatPct(comisionPct),
+          }}
+        />
+      </Card>
     </div>
   );
 }
