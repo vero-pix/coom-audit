@@ -77,15 +77,6 @@ export function getFinClass(type, value = 0) {
 }
 
 /**
- * Calcula totales de un array de objetos
- * @param {Array} data - Array de objetos
- * @param {string} key - Key a sumar
- */
-export function sumBy(data, key) {
-  return data.reduce((acc, item) => acc + (item[key] || 0), 0);
-}
-
-/**
  * Exporta tabla a CSV
  * @param {Array} data - Datos a exportar
  * @param {Array} columns - Columnas [{key, label}]
