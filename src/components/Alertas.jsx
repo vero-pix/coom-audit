@@ -10,7 +10,7 @@ export function Alertas() {
     <div>
       <div style={{ marginBottom: 'var(--space-6)' }}>
         <h1 style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>
-          Alertas de auditoría
+          Alertas financieras
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
           Hallazgos que requieren atención · {EMPRESA.periodo}

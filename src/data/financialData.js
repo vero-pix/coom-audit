@@ -82,7 +82,7 @@ export const COSTO_VENTA_RESUMEN = {
   totalMayor: 79090144,
   totalRCV: 71158944,
   diferencia: 7931200,
-  notasDiferencia: "Incluye NC ($1.4M), ajustes de cierre, y posible timing entre facturación y registro.",
+  notasDiferencia: "La diferencia de $7.9M entre el mayor y el RCV puede incluir: arriendo Territoria reclasificado como costo directo (~$2.2M), facturas de proveedores menores, y ajustes de cierre de diciembre. Se requiere el auxiliar contable de Account SPA para desglosar.",
   debitosBrutos: 80485369,
   creditosNC: 1395225,
 };
@@ -218,4 +218,89 @@ export const ALERTAS = [
 export const DOCUMENTOS = [
   { nombre: "Cuadratura SII 2025", archivo: "COOM_Cuadratura_SII_2025.xlsx", tipo: "Excel" },
   { nombre: "Flujo de Caja y Conciliación", archivo: "COOM_FlujoCaja_Conciliacion_2025.xlsx", tipo: "Excel" },
+];
+
+// ─────────────────────────────────────────
+// PREGUNTAS PARA REUNIÓN
+// Contadora (Account SPA) + Inspectora de Cuentas + La Tía + Vericosas
+// ─────────────────────────────────────────
+export const PREGUNTAS_REUNION = [
+  {
+    tema: "Costo de venta: composición de los $79.1M",
+    dirigidaA: "Contadora (Account SPA)",
+    prioridad: "ALTA",
+    preguntas: [
+      "La cuenta 3-01-02-01 registra $79.1M en costo de venta, pero el RCV SII solo muestra $71.2M en liquidaciones a las 7 marcas. \u00bfQu\u00e9 compone los $7.9M de diferencia?",
+      "\u00bfSe incluyeron facturas de Territoria Apoquindo en costo de venta? El mayor muestra $5.6M en arriendos (3-01-06-28) pero el RCV tiene $7.84M de Territoria.",
+      "Diciembre registra $18.5M en costo de venta, tres veces el promedio mensual. \u00bfQu\u00e9 ajustes de cierre se hicieron?",
+      "\u00bfPueden proporcionarnos el auxiliar de la cuenta 3-01-02-01 con detalle de RUT por cada factura?"
+    ]
+  },
+  {
+    tema: "Resultado del ejercicio: $4.5M vs $5.2M",
+    dirigidaA: "Contadora (Account SPA)",
+    prioridad: "ALTA",
+    preguntas: [
+      "La cuenta 2-03-12-01 muestra resultado de $4.457.903, pero la reconstrucci\u00f3n del EERR desde las cuentas de resultado da $5.183.503. \u00bfQu\u00e9 explica la diferencia de $725.600?",
+      "\u00bfSe hicieron ajustes de cierre adicionales que no est\u00e1n en las cuentas de clase 3?",
+      "\u00bfCu\u00e1l es la cifra definitiva que ir\u00e1 al F22 AT2026?"
+    ]
+  },
+  {
+    tema: "Multas fiscales: $106.755",
+    dirigidaA: "Contadora (Account SPA)",
+    prioridad: "ALTA",
+    preguntas: [
+      "La cuenta 3-02-07-06 registra $106.755 en multas fiscales. \u00bfCu\u00e1l fue el origen de estas multas?",
+      "\u00bfFueron por declaraciones fuera de plazo, diferencias en F29, u otra causa?",
+      "\u00bfSe tomaron medidas para evitar reincidencia?"
+    ]
+  },
+  {
+    tema: "Excedentes distribuidos con CPTS negativo",
+    dirigidaA: "Inspectora de Cuentas / La T\u00eda",
+    prioridad: "CR\u00cdTICA",
+    preguntas: [
+      "Se distribuyeron aproximadamente $3.4M como excedentes a socias durante per\u00edodos en que el CPTS era negativo (-$3.599.473). \u00bfSe hizo con acuerdo de asamblea?",
+      "Art. 36 de la Ley General de Cooperativas proh\u00edbe distribuir excedentes sin utilidades reales. \u00bfC\u00f3mo se propone regularizar esta situaci\u00f3n?",
+      "\u00bfSe pueden reclasificar como pr\u00e9stamos a socias o anticipos a cuenta de futuros excedentes?"
+    ]
+  },
+  {
+    tema: "CPTS proyectado y distribuci\u00f3n futura",
+    dirigidaA: "Contadora / Inspectora",
+    prioridad: "MEDIA",
+    preguntas: [
+      "Si el resultado de AC2025 es positivo (~$4.5M a $5.2M), el CPTS pasar\u00eda a positivo por primera vez. \u00bfConfirma Account SPA esta proyecci\u00f3n?",
+      "\u00bfCu\u00e1ndo se presentar\u00e1 el F22 AT2026? \u00bfAntes de la asamblea ordinaria?",
+      "Con CPTS positivo, \u00bfcu\u00e1l ser\u00eda el monto m\u00e1ximo distribuible como excedentes seg\u00fan estatutos?"
+    ]
+  },
+  {
+    tema: "Honorarios por pagar al cierre: $772.734",
+    dirigidaA: "La T\u00eda",
+    prioridad: "MEDIA",
+    preguntas: [
+      "Al 31/dic/2025 quedan $772.734 en honorarios pendientes de pago (cuenta 2-01-06-04). \u00bfA qui\u00e9n corresponden?",
+      "\u00bfSe pagaron en enero 2026?"
+    ]
+  },
+  {
+    tema: "F29 febrero 2026 no declarado",
+    dirigidaA: "Contadora (Account SPA)",
+    prioridad: "MEDIA",
+    preguntas: [
+      "La carpeta tributaria al 04/03/2026 no registra F29 de febrero 2026. \u00bfSe present\u00f3 despu\u00e9s de esa fecha?",
+      "\u00bfHay riesgo de multa por declaraci\u00f3n tard\u00eda?"
+    ]
+  },
+  {
+    tema: "Clasificaci\u00f3n socias vs terceros (Art. 17 DL 824)",
+    dirigidaA: "Contadora / Inspectora",
+    prioridad: "MEDIA",
+    preguntas: [
+      "Las operaciones con socias (Aptiqa, Savia, Florence) deber\u00edan ser exentas de IVA seg\u00fan Art. 17 DL 824. \u00bfSe est\u00e1 aplicando correctamente esta distinci\u00f3n en la facturaci\u00f3n?",
+      "En noviembre 2025 se emitieron facturas afectas a socias que luego se anularon con NC. \u00bfQu\u00e9 ocurri\u00f3?"
+    ]
+  }
 ];

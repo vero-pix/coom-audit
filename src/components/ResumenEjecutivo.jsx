@@ -1,13 +1,11 @@
 // ============================================
 // COOM - Resumen Ejecutivo (v2 - Account SPA)
 // ============================================
-import { Card, KPI as KPIWidget, DataTable, Badge, Alert } from './ui';
+import { Card, KPI as KPIWidget, DataTable, Badge } from './ui';
 import { formatCLP, formatPct } from '../utils/format';
-import { EERR, CADA100, EMPRESA, ALERTAS, COSTO_VENTA_MARCAS, COSTO_VENTA_RESUMEN, COSTO_VENTA_MENSUAL } from '../data/financialData';
+import { EERR, CADA100, EMPRESA, COSTO_VENTA_MARCAS, COSTO_VENTA_RESUMEN, COSTO_VENTA_MENSUAL } from '../data/financialData';
 
 export function ResumenEjecutivo() {
-  const alertasCriticas = ALERTAS.filter(a => a.nivel === 'CRITICO' || a.nivel === 'ALTO');
-
   return (
     <div>
       <div style={{ marginBottom: 'var(--space-6)' }}>
@@ -18,12 +16,6 @@ export function ResumenEjecutivo() {
           {EMPRESA.nombre} · {EMPRESA.periodo} · Fuente: {EMPRESA.fuente}
         </p>
       </div>
-
-      {alertasCriticas.length > 0 && (
-        <div style={{ marginBottom: 'var(--space-6)' }}>
-          {alertasCriticas.map((a, i) => <Alert key={i} {...a} />)}
-        </div>
-      )}
 
       {/* KPIs */}
       <div className="kpi-grid" style={{ marginBottom: 'var(--space-6)' }}>

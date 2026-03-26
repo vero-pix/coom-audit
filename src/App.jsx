@@ -9,6 +9,7 @@ import { CostosGastos } from './components/CostosGastos';
 import { PatrimonioView } from './components/PatrimonioView';
 import { Alertas } from './components/Alertas';
 import { Documentos } from './components/Documentos';
+import { PreguntasReunion } from './components/PreguntasReunion';
 import { EMPRESA } from './data/financialData';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
       case 'gastos': return <CostosGastos />;
       case 'patrimonio': return <PatrimonioView />;
       case 'alertas': return <Alertas />;
+      case 'preguntas': return <PreguntasReunion />;
       case 'documentos': return <Documentos />;
       default: return <ResumenEjecutivo />;
     }
